@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.pdf binary
+*.doc binary
+*.docx binary
+*.odt binary
+tests/fixtures/** -text
+Pluma.html text eol=lf linguist-generated
+docs/** linguist-documentation

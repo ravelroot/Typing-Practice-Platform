@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Pluma: treino de digitação em português, com modo livre e modo teste, diagnóstico de tempo, erros, acertos, precisão e toques líquidos.">
+  <title>Pluma</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <script>(function(){var d=document.documentElement,p={};try{p=JSON.parse(localStorage.getItem('pluma:prefs')||'{}')||{}}catch(e){}var t=p.theme==='dark'||p.theme==='light'?p.theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.dataset.theme=t;if(p.palette&&p.palette!=='pluma')d.dataset.palette=p.palette;if(p.fontSize&&p.fontSize!=='medium')d.dataset.font=p.fontSize;if(p.effects===false)d.dataset.motion='off';})();</script>
+  <link rel="stylesheet" href="css/pluma.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <button class="logo-btn" id="menuBtn" title="Menu do Pluma" aria-label="Menu do Pluma" aria-haspopup="menu" aria-expanded="false"><span class="logo" data-logo></span></button>
+        <span class="brand-name">Pluma</span>
+        <span class="brand-tag">treino de digitação</span>
+      </div>
+      <nav class="controls" aria-label="Configuração do treino">
+        <div class="seg" id="modeSeg" role="radiogroup" aria-label="Modo"></div>
+        <div class="dropdown" id="kindDrop"></div>
+        <div class="seg" id="sizeSeg" role="radiogroup" aria-label="Tamanho"></div>
+        <div class="seg" id="complexitySeg" role="radiogroup" aria-label="Complexidade"></div>
+      </nav>
+      <div class="top-right">
+        <button class="btn icon ghost" id="historyBtn" title="Histórico e recordes (Alt+H)" aria-label="Histórico e recordes"></button>
+        <button class="btn icon ghost" id="keyboardBtn" title="Teclado na tela (Alt+K)" aria-label="Teclado na tela" aria-pressed="true"></button>
+        <button class="btn icon ghost" id="soundBtn" title="Som das teclas (Alt+S)" aria-label="Som das teclas" aria-pressed="false"></button>
+        <button class="btn icon ghost" id="paletteBtn" title="Paleta de cores" aria-label="Paleta de cores" aria-haspopup="menu" aria-expanded="false"></button>
+        <button class="btn icon ghost" id="themeBtn" title="Tema claro ou escuro" aria-label="Tema claro ou escuro"></button>
+      </div>
+    </header>
+
+    <main class="stage" id="stage">
+      <div class="stage-inner">
+        <section class="hud" id="hud" aria-label="Desempenho ao vivo"></section>
+
+        <section class="typing" id="typing" aria-label="Área de digitação">
+          <div class="typing-head">
+            <span class="tag" id="typingTag"><i></i><span></span></span>
+            <span id="typingInfo"></span>
+          </div>
+          <div class="viewport" id="viewport">
+            <div class="scroller" id="scroller">
+              <div class="glow" id="glow" aria-hidden="true"></div>
+              <div class="text" id="text" aria-hidden="true"></div>
+              <div class="caret" id="caret" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="progress" aria-hidden="true"><i id="progress"></i></div>
+          <textarea class="hidden-input" id="input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Digite o texto mostrado"></textarea>
+          <canvas class="fx" id="fx" aria-hidden="true"></canvas>
+          <div class="focus-veil" id="veil"><span id="veilText">Clique aqui ou aperte qualquer tecla para continuar</span></div>
+          <p class="sr-only" id="liveText" aria-live="polite" hidden></p>
+        </section>
+
+        <div class="actions" id="actions"></div>
+
+        <section class="keyboard-wrap" id="keyboardWrap" aria-label="Teclado na tela">
+          <div class="kb" id="kb" aria-hidden="true"></div>
+          <div class="finger-hint" id="fingerHint"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="statusbar">
+      <div class="left" id="statusLeft"></div>
+      <div class="right" id="statusRight"></div>
+    </footer>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="loading" id="loading"><span class="logo big" data-logo></span><span>Carregando o Pluma…</span></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

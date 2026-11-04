@@ -1,0 +1,1229 @@
+{
+ "version": 1,
+ "phrases": [
+  {
+   "id": "se01",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O sol nasceu cedo e a casa ficou clara."
+  },
+  {
+   "id": "se02",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A menina leu um livro na varanda."
+  },
+  {
+   "id": "se03",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O gato dorme perto da janela."
+  },
+  {
+   "id": "se04",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Hoje vamos andar de bicicleta no parque."
+  },
+  {
+   "id": "se05",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A chuva molhou o quintal inteiro."
+  },
+  {
+   "id": "se06",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Meu irmão gosta de pão com manteiga."
+  },
+  {
+   "id": "se07",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O vento leva as folhas para longe."
+  },
+  {
+   "id": "se08",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A escola fica no fim da rua."
+  },
+  {
+   "id": "se09",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Ela pintou a parede de azul."
+  },
+  {
+   "id": "se10",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O cachorro correu atrás da bola."
+  },
+  {
+   "id": "se11",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Vamos fazer um bolo de cenoura."
+  },
+  {
+   "id": "se12",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O rio passa devagar perto da ponte."
+  },
+  {
+   "id": "se13",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A lua estava cheia e muito bonita."
+  },
+  {
+   "id": "se14",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O trem saiu cedo da cidade."
+  },
+  {
+   "id": "se15",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Minha mãe planta flores no jardim."
+  },
+  {
+   "id": "se16",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O peixe nada no aquário da sala."
+  },
+  {
+   "id": "se17",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Pedro abriu a porta e saiu para a rua."
+  },
+  {
+   "id": "se18",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A praia estava calma de manhã."
+  },
+  {
+   "id": "se19",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O café quente ajuda a começar o dia."
+  },
+  {
+   "id": "se20",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Uma nuvem cobriu o sol por um tempo."
+  },
+  {
+   "id": "se21",
+   "size": "short",
+   "complexity": "easy",
+   "text": "As crianças cantam na hora do recreio."
+  },
+  {
+   "id": "se22",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O livro novo tem capa vermelha."
+  },
+  {
+   "id": "se23",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A feira tem frutas frescas todo sábado."
+  },
+  {
+   "id": "se24",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O avô conta histórias antes de dormir."
+  },
+  {
+   "id": "se25",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A estrada segue entre os morros verdes."
+  },
+  {
+   "id": "se26",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Ela guardou o caderno na mochila."
+  },
+  {
+   "id": "se27",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O pássaro fez um ninho na árvore."
+  },
+  {
+   "id": "se28",
+   "size": "short",
+   "complexity": "easy",
+   "text": "A água do mar estava fria."
+  },
+  {
+   "id": "se29",
+   "size": "short",
+   "complexity": "easy",
+   "text": "O time treina todo dia depois da aula."
+  },
+  {
+   "id": "se30",
+   "size": "short",
+   "complexity": "easy",
+   "text": "Abra a janela para entrar ar fresco."
+  },
+  {
+   "id": "sm01",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Você já provou o pão de queijo da padaria nova?"
+  },
+  {
+   "id": "sm02",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A cidade acordou cedo para ver o desfile na avenida."
+  },
+  {
+   "id": "sm03",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Que bom que a chuva parou antes do almoço!"
+  },
+  {
+   "id": "sm04",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O ônibus atrasou, então caminhamos até a estação."
+  },
+  {
+   "id": "sm05",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Na próxima semana, a biblioteca abrirá aos domingos."
+  },
+  {
+   "id": "sm06",
+   "size": "short",
+   "complexity": "medium",
+   "text": "As lâmpadas da praça acenderam ao mesmo tempo."
+  },
+  {
+   "id": "sm07",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Ninguém esperava que o espetáculo terminasse tão cedo."
+  },
+  {
+   "id": "sm08",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O irmão de Júlia aprendeu a tocar violão sozinho."
+  },
+  {
+   "id": "sm09",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Será que a ponte ficará pronta até o verão?"
+  },
+  {
+   "id": "sm10",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A informação chegou rápido, mas ninguém acreditou."
+  },
+  {
+   "id": "sm11",
+   "size": "short",
+   "complexity": "medium",
+   "text": "No inverno, o chá de hortelã esquenta as mãos."
+  },
+  {
+   "id": "sm12",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Belo Horizonte tem morros, cafés e muitas histórias."
+  },
+  {
+   "id": "sm13",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O cientista anotou cada detalhe no caderno de campo."
+  },
+  {
+   "id": "sm14",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Depois da reunião, todos voltaram às suas mesas."
+  },
+  {
+   "id": "sm15",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A canção tocou no rádio e encheu a cozinha de alegria."
+  },
+  {
+   "id": "sm16",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Ela pediu silêncio, pois a explicação era importante."
+  },
+  {
+   "id": "sm17",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O voo para Recife saiu com dez minutos de atraso."
+  },
+  {
+   "id": "sm18",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Organize as gavetas antes de começar a mudança."
+  },
+  {
+   "id": "sm19",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A sombra da mangueira é o melhor lugar da fazenda."
+  },
+  {
+   "id": "sm20",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Por que o céu fica alaranjado no fim da tarde?"
+  },
+  {
+   "id": "sm21",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O mecânico explicou o problema com muita paciência."
+  },
+  {
+   "id": "sm22",
+   "size": "short",
+   "complexity": "medium",
+   "text": "As ondas apagaram os desenhos feitos na areia."
+  },
+  {
+   "id": "sm23",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Quem chegar primeiro abre o portão do sítio."
+  },
+  {
+   "id": "sm24",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A atleta comemorou a vitória com a família na arquibancada."
+  },
+  {
+   "id": "sm25",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Em Salvador, o pôr do sol na baía é inesquecível."
+  },
+  {
+   "id": "sm26",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O João trouxe limões, açúcar e gelo para a limonada."
+  },
+  {
+   "id": "sm27",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Ainda não sei se a exposição vale a pena, mas vou conferir."
+  },
+  {
+   "id": "sm28",
+   "size": "short",
+   "complexity": "medium",
+   "text": "A professora elogiou a redação sobre o Pantanal."
+  },
+  {
+   "id": "sm29",
+   "size": "short",
+   "complexity": "medium",
+   "text": "Às vezes, uma pausa curta resolve mais que horas de esforço."
+  },
+  {
+   "id": "sm30",
+   "size": "short",
+   "complexity": "medium",
+   "text": "O farol piscava sem parar durante a tempestade."
+  },
+  {
+   "id": "sh01",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A conta deu R$ 87,40; dividimos entre três pessoas."
+  },
+  {
+   "id": "sh02",
+   "size": "short",
+   "complexity": "hard",
+   "text": "\"Quem lê viaja\", disse a bibliotecária, sorrindo."
+  },
+  {
+   "id": "sh03",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O voo 1452 (Rio-Lisboa) decolou às 23h15."
+  },
+  {
+   "id": "sh04",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Inflação de 4,8% ao ano? Os economistas discordam."
+  },
+  {
+   "id": "sh05",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Bem-vindo à sala 3-B: desligue o celular, por favor."
+  },
+  {
+   "id": "sh06",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O pH da solução caiu de 7,2 para 6,5 em duas horas."
+  },
+  {
+   "id": "sh07",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Paralelepípedos irregulares tornavam a caminhada exaustiva."
+  },
+  {
+   "id": "sh08",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A lista incluía: farinha, ovos, fermento e açúcar mascavo."
+  },
+  {
+   "id": "sh09",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Envie o relatório para contato@exemplo.com.br até sexta."
+  },
+  {
+   "id": "sh10",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O guarda-chuva verde-escuro ficou esquecido no táxi."
+  },
+  {
+   "id": "sh11",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Em 1822, o grito do Ipiranga mudou a história do país."
+  },
+  {
+   "id": "sh12",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Na serra, a temperatura variou de -3 a 12 graus."
+  },
+  {
+   "id": "sh13",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Hipopótamos passam até 16 horas por dia dentro da água."
+  },
+  {
+   "id": "sh14",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O código \"PL-2026/07\" identificava o lote extraviado."
+  },
+  {
+   "id": "sh15",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Excepcionalmente, a reunião começará às 7h45 (não às 8h)."
+  },
+  {
+   "id": "sh16",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Ele respondeu: \"Não sei; talvez amanhã, talvez nunca.\""
+  },
+  {
+   "id": "sh17",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A senha deve ter 12 caracteres, números e símbolos (#, @, &)."
+  },
+  {
+   "id": "sh18",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O desconto de 15% vale só para compras acima de R$ 200,00."
+  },
+  {
+   "id": "sh19",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Pneumoultramicroscopicossilicovulcanoconiótico é uma palavra real."
+  },
+  {
+   "id": "sh20",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A equação 3x + 5 = 20 tem solução x = 5."
+  },
+  {
+   "id": "sh21",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O ônibus 312 (Centro-Rodoviária) estava lotadíssimo."
+  },
+  {
+   "id": "sh22",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Atenção: o prazo de inscrição termina em 15/03/2027."
+  },
+  {
+   "id": "sh23",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Ah, se eu soubesse... teria trazido o casaco!"
+  },
+  {
+   "id": "sh24",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A mochila pesava 7,5 kg; a mala, quase o dobro."
+  },
+  {
+   "id": "sh25",
+   "size": "short",
+   "complexity": "hard",
+   "text": "\"Psicólogo\" e \"pneumático\" têm encontros consonantais pouco comuns."
+  },
+  {
+   "id": "sh26",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O empréstimo de R$ 1.200,00 será pago em 6 parcelas."
+  },
+  {
+   "id": "sh27",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Quem disse que a matemática não é poética? (Pergunte a Euclides.)"
+  },
+  {
+   "id": "sh28",
+   "size": "short",
+   "complexity": "hard",
+   "text": "O sinal de Wi-Fi caiu às 14h02 e voltou às 14h37."
+  },
+  {
+   "id": "sh29",
+   "size": "short",
+   "complexity": "hard",
+   "text": "Ex-alunos, pais e mestres: todos à quadra às 19h!"
+  },
+  {
+   "id": "sh30",
+   "size": "short",
+   "complexity": "hard",
+   "text": "A receita pede 2/3 de xícara de leite e 1 colher de chá de sal."
+  },
+  {
+   "id": "me01",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O dia começou com um céu cinza e um vento frio. Mesmo assim, as crianças foram para o parque e brincaram até a hora do almoço."
+  },
+  {
+   "id": "me02",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A padaria da esquina abre muito cedo. O cheiro do pão quente chega até a minha janela e me faz levantar da cama."
+  },
+  {
+   "id": "me03",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Meu tio tem uma horta pequena atrás da casa. Ele planta alface, tomate e cebolinha, e divide tudo com os vizinhos."
+  },
+  {
+   "id": "me04",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Na beira do lago, um pescador esperava com calma. O sol brilhava na água e os peixes pareciam não ter pressa."
+  },
+  {
+   "id": "me05",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A biblioteca da cidade tem muitos livros antigos. Nas tardes de sábado, ela fica cheia de estudantes e de leitores curiosos."
+  },
+  {
+   "id": "me06",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Ana gosta de desenhar animais. Ela usa lápis de cor, papel grosso e muita paciência para acertar cada detalhe."
+  },
+  {
+   "id": "me07",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O caminho até a cachoeira é longo, mas vale a pena. No fim da trilha, a água fria lava o cansaço da subida."
+  },
+  {
+   "id": "me08",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Toda manhã, o carteiro passa pela rua com sua bolsa pesada. Ele conhece cada casa e sempre cumprimenta quem está no portão."
+  },
+  {
+   "id": "me09",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A festa da escola teve música, comida e jogos. No fim, todos ajudaram a limpar o pátio e a guardar as cadeiras."
+  },
+  {
+   "id": "me10",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O mar estava calmo e o barco seguiu devagar. Ao longe, a ilha parecia um desenho verde no meio do azul."
+  },
+  {
+   "id": "me11",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Minha avó faz o melhor arroz doce da família. Ela diz que o segredo é mexer a panela com carinho e sem pressa."
+  },
+  {
+   "id": "me12",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O ônibus da linha azul passa a cada vinte minutos. Quando chove, ele demora mais e a fila no ponto fica grande."
+  },
+  {
+   "id": "me13",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Os vizinhos plantaram uma árvore na calçada. Daqui a alguns anos, ela vai dar sombra para quem passar por ali."
+  },
+  {
+   "id": "me14",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O time da rua treina todo fim de tarde. Eles não têm uniforme, mas jogam com vontade e se divertem muito."
+  },
+  {
+   "id": "me15",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Depois do jantar, a família se reúne na sala. Uns leem, outros conversam e o cachorro dorme no tapete."
+  },
+  {
+   "id": "me16",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A estrada de terra leva até uma vila pequena. Lá, as casas são coloridas e as pessoas falam baixo e sorriem fácil."
+  },
+  {
+   "id": "me17",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O inverno chegou e as noites ficaram mais longas. É a época de sopa quente, cobertor grosso e filmes no sofá."
+  },
+  {
+   "id": "me18",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A lagarta comeu folhas por vários dias. Depois, fez um casulo e esperou até virar uma borboleta de asas amarelas."
+  },
+  {
+   "id": "me19",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "Lucas aprendeu a andar de bicicleta sem rodinhas. Caiu algumas vezes, mas levantou rindo e tentou de novo."
+  },
+  {
+   "id": "me20",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O mercado do bairro vende frutas da estação. Agora tem manga, caju e abacaxi, todos doces e baratos."
+  },
+  {
+   "id": "me21",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A chuva da tarde deixou o ar mais leve. As ruas ficaram limpas e o cheiro de terra molhada tomou conta da cidade."
+  },
+  {
+   "id": "me22",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O músico tocava na praça sem pedir nada. As pessoas paravam, ouviam um pouco e seguiam o caminho mais felizes."
+  },
+  {
+   "id": "me23",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "A sala de aula tem janelas grandes e muita luz. Nas paredes, os alunos colam mapas, poemas e desenhos."
+  },
+  {
+   "id": "me24",
+   "size": "medium",
+   "complexity": "easy",
+   "text": "O farol fica no alto da pedra, perto do mar. De noite, a luz dele gira e ajuda os barcos a voltar para o porto."
+  },
+  {
+   "id": "mm01",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Ninguém sabia ao certo quando a ponte tinha sido construída. Os mais velhos diziam que ela já estava lá antes da estrada, firme, resistindo às cheias de cada verão."
+  },
+  {
+   "id": "mm02",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Será que dá tempo de visitar o museu antes de fechar? A exposição sobre a Amazônia termina amanhã, e eu não quero perder a sala das orquídeas."
+  },
+  {
+   "id": "mm03",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Em Porto Alegre, o chimarrão passa de mão em mão nas tardes frias. É um costume simples, mas que transforma qualquer conversa em um encontro."
+  },
+  {
+   "id": "mm04",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A engenheira revisou o projeto três vezes antes da apresentação. Mesmo assim, encontrou um erro no último minuto e corrigiu tudo sem perder a calma."
+  },
+  {
+   "id": "mm05",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O vendedor de picolé anunciava os sabores com voz de cantor: coco, limão, maracujá! As crianças corriam atrás dele como se fosse um desfile."
+  },
+  {
+   "id": "mm06",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Quando a energia acabou, a cidade ficou em silêncio. Velas foram acesas, histórias foram contadas e, por algumas horas, ninguém sentiu falta das telas."
+  },
+  {
+   "id": "mm07",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A tartaruga-marinha voltou à mesma praia onde nasceu, décadas depois. Os biólogos acompanharam cada passo e registraram a desova durante a madrugada."
+  },
+  {
+   "id": "mm08",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Você prefere viajar de carro ou de avião? Eu gosto da estrada, porque cada parada revela uma comida diferente e uma paisagem nova."
+  },
+  {
+   "id": "mm09",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O jornal da manhã trouxe uma notícia animadora: a qualidade do ar melhorou na capital. Especialistas atribuem a mudança ao aumento das ciclovias."
+  },
+  {
+   "id": "mm10",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A cozinheira provou o feijão, franziu a testa e pediu mais louro. Só depois de ajustar o tempero ela liberou as panelas para o almoço."
+  },
+  {
+   "id": "mm11",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Na feira de ciências, o projeto mais visitado foi um robô que separava lixo reciclável. Os alunos explicavam tudo com orgulho e muita paciência."
+  },
+  {
+   "id": "mm12",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Às margens do São Francisco, as lavadeiras cantavam enquanto trabalhavam. A melodia acompanhava o ritmo da água e atravessava o rio."
+  },
+  {
+   "id": "mm13",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O fotógrafo esperou horas pela luz perfeita. Quando o sol finalmente atravessou as nuvens, ele fez apenas uma foto, e ela bastou."
+  },
+  {
+   "id": "mm14",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Por que é tão difícil começar um hábito novo? Talvez porque a gente espera resultados rápidos e esquece que cada dia conta um pouco."
+  },
+  {
+   "id": "mm15",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A orquestra afinava os instrumentos enquanto o público se acomodava. Quando o maestro levantou a batuta, o teatro inteiro prendeu a respiração."
+  },
+  {
+   "id": "mm16",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Florianópolis tem mais de quarenta praias, cada uma com seu jeito. Algumas são agitadas e cheias de surfistas; outras, calmas e quase desertas."
+  },
+  {
+   "id": "mm17",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O relógio da estação parou às três e ninguém consertou. Com o tempo, ele virou ponto de encontro da cidade inteira."
+  },
+  {
+   "id": "mm18",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A avó guardava receitas em um caderno de capa dura. Cada página tinha manchas de farinha, anotações nas margens e o nome de quem ensinou."
+  },
+  {
+   "id": "mm19",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Depois de semanas de seca, a primeira chuva foi comemorada como festa. Os agricultores olharam para o céu e, aliviados, voltaram ao trabalho."
+  },
+  {
+   "id": "mm20",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O aplicativo prometia organizar a rotina, mas exigia tanta atenção que virou mais uma tarefa. Ela apagou tudo e voltou ao velho caderno."
+  },
+  {
+   "id": "mm21",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A equipe de resgate chegou ao topo da serra pouco antes do anoitecer. Os montanhistas estavam cansados, com frio, porém em segurança."
+  },
+  {
+   "id": "mm22",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "Quem visita Ouro Preto sente que o tempo anda mais devagar. As ladeiras de pedra, as igrejas e os sinos guardam séculos de história."
+  },
+  {
+   "id": "mm23",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "O menino perguntou ao pai como os aviões conseguem voar. A resposta envolveu papel, uma janela aberta e uma tarde inteira de experiências."
+  },
+  {
+   "id": "mm24",
+   "size": "medium",
+   "complexity": "medium",
+   "text": "A padeira acordava às quatro da manhã para preparar a massa. Dizia que o pão sente quando a pessoa está com pressa, e por isso nunca corria."
+  },
+  {
+   "id": "mh01",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O orçamento previa R$ 3.450,00 para materiais; no entanto, o gasto real chegou a R$ 4.112,35 (19% acima do planejado)."
+  },
+  {
+   "id": "mh02",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "\"Não existe atalho para a prática\", repetia o treinador. E completava: \"Quem treina 15 minutos por dia vence quem treina 3 horas por mês.\""
+  },
+  {
+   "id": "mh03",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Segundo a pesquisa, 62% dos entrevistados leem pelo menos um livro por mês; entre os jovens de 15 a 24 anos, o índice sobe para 71%."
+  },
+  {
+   "id": "mh04",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A reunião foi remarcada: antes às 9h30, agora às 14h (sala 402, bloco C). Tragam o notebook, o carregador e os relatórios impressos."
+  },
+  {
+   "id": "mh05",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O experimento exigia precisão: 250 ml de água destilada, 12,5 g de sal e temperatura constante de 37 graus, durante exatamente 48 horas."
+  },
+  {
+   "id": "mh06",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Excesso de zelo? Talvez. Mas o arquiteto insistiu em revisar cada viga, cada pilar e cada cálculo estrutural antes de liberar a obra."
+  },
+  {
+   "id": "mh07",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O e-mail dizia apenas: \"Confirmado. Chegada prevista para 22/08, voo 3317, portão 12.\" Nada mais, nenhuma explicação."
+  },
+  {
+   "id": "mh08",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A célula fotovoltaica converte luz em eletricidade; a eficiência dos painéis comerciais costuma ficar entre 18% e 23%."
+  },
+  {
+   "id": "mh09",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Ex-presidente do clube, o senhor Álvaro (82 anos) ainda acompanha os treinos: chega cedo, senta-se na arquibancada e anota tudo."
+  },
+  {
+   "id": "mh10",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Com a umidade do ar abaixo de 20%, a Defesa Civil recomendou beber água e evitar exercícios ao ar livre entre 10h e 16h."
+  },
+  {
+   "id": "mh11",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A senha provisória (k7#Rm2@q) expira em 24 horas; depois disso, será necessário solicitar outra pelo site."
+  },
+  {
+   "id": "mh12",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Paralelamente, a equipe técnica redigiu um parecer de 37 páginas, com gráficos, tabelas e um anexo sobre impactos socioambientais."
+  },
+  {
+   "id": "mh13",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Hífen ou não? \"Micro-ondas\" tem; \"microempresa\", não. A regra depende da letra inicial do segundo elemento."
+  },
+  {
+   "id": "mh14",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O cronograma ficou assim: fase 1 (março a maio), fase 2 (junho a agosto) e fase 3, de revisão, até o fim de outubro."
+  },
+  {
+   "id": "mh15",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Quantos bytes cabem em 1 KB? Depende: 1.000 no Sistema Internacional e 1.024 na convenção binária, o que já causou muita confusão."
+  },
+  {
+   "id": "mh16",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A frase \"o rato roeu a roupa do rei de Roma\" é um clássico; repita-a três vezes, rápido, sem tropeçar!"
+  },
+  {
+   "id": "mh17",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Em 2014, a sonda Rosetta pousou um módulo num cometa a mais de 500 milhões de km da Terra; a façanha levou 10 anos de viagem."
+  },
+  {
+   "id": "mh18",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Itens obrigatórios: lanterna, apito, 2 litros de água, protetor solar (FPS 50+) e um agasalho impermeável."
+  },
+  {
+   "id": "mh19",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A taxa de juros subiu 0,25 ponto percentual; analistas preveem novos ajustes, mas o mercado reagiu com cautela, e não com pânico."
+  },
+  {
+   "id": "mh20",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O poeta escreveu à mão, numa folha amassada: \"Volto já.\" Nunca voltou; a folha, porém, continua pendurada na porta da livraria."
+  },
+  {
+   "id": "mh21",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Atenção, passageiros: o trem com destino a Japeri partirá da plataforma 4, e não da 2, como informado anteriormente."
+  },
+  {
+   "id": "mh22",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "A tabela periódica tem 118 elementos confirmados; em 2016, quatro deles receberam nome, entre eles o oganessônio (Og)."
+  },
+  {
+   "id": "mh23",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "Pré-requisitos do curso: lógica de programação, noções de SQL e inglês técnico; carga horária de 120h, com aulas às terças e quintas."
+  },
+  {
+   "id": "mh24",
+   "size": "medium",
+   "complexity": "hard",
+   "text": "O quadro custou US$ 2,3 milhões em leilão; especialistas, entretanto, questionam a autoria e pedem uma nova perícia."
+  },
+  {
+   "id": "le01",
+   "size": "long",
+   "complexity": "easy",
+   "text": "A casa da praia ficava no fim de uma rua de areia. Nas férias, a família inteira se reunia lá para descansar e comer peixe fresco. De manhã, as crianças corriam para o mar e só voltavam quando a fome apertava. De tarde, os adultos jogavam cartas na varanda e falavam alto. Quando o sol se punha, todos paravam para olhar o céu mudar de cor, e ninguém dizia nada por alguns minutos."
+  },
+  {
+   "id": "le02",
+   "size": "long",
+   "complexity": "easy",
+   "text": "O pequeno sítio do seu Antônio tinha galinhas, duas vacas e um cavalo velho chamado Trovão. Todo dia, ele acordava antes do sol, tomava um café forte e ia cuidar dos bichos. Depois, regava a horta e colhia o que estava pronto. Nos fins de semana, os netos chegavam da cidade e queriam ajudar em tudo. Ele explicava cada tarefa com calma e ria quando alguém se sujava de lama."
+  },
+  {
+   "id": "le03",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Ler antes de dormir é um hábito simples que muda o fim do dia. A luz fica mais fraca, o barulho diminui e a cabeça começa a desacelerar. Uma boa história leva a gente para outros lugares sem sair da cama. Algumas noites, o sono vem depois de duas páginas. Em outras, o livro é tão bom que a gente promete ler só mais um capítulo e acaba vendo o dia nascer."
+  },
+  {
+   "id": "le04",
+   "size": "long",
+   "complexity": "easy",
+   "text": "A feira de domingo começa cedo, quando as barracas ainda estão sendo montadas. Os feirantes arrumam as frutas em pilhas coloridas e chamam os clientes com voz alta. Tem banana, laranja, mamão e verduras de todos os tipos. No meio da feira, o pastel quente faz fila. Quem vai de manhã escolhe melhor, e quem vai no fim consegue os preços mais baixos."
+  },
+  {
+   "id": "le05",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Aprender a nadar exige paciência e um pouco de coragem. No começo, a água parece fria e o corpo não sabe o que fazer. Aos poucos, a gente aprende a respirar, a bater as pernas e a confiar no próprio corpo. Um dia, sem perceber, atravessa a piscina inteira. Esse dia fica guardado na memória como uma pequena vitória, daquelas que dão vontade de contar para todo mundo."
+  },
+  {
+   "id": "le06",
+   "size": "long",
+   "complexity": "easy",
+   "text": "O trem atravessava campos verdes e pequenas cidades. Pela janela, era possível ver vacas no pasto, rios estreitos e casas com roupas no varal. Alguns passageiros dormiam, outros liam ou olhavam a paisagem passar. Uma criança contava as pontes em voz alta. Quando o trem chegou na última estação, ela anunciou com orgulho que tinha contado doze."
+  },
+  {
+   "id": "le07",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Fazer pão em casa é mais fácil do que parece. Basta misturar farinha, água, sal e fermento, e depois sovar a massa até ela ficar lisa. Então é preciso esperar que ela cresça, o que leva cerca de uma hora. Depois, a massa vai para o forno quente. O cheiro que toma conta da casa é tão bom que ninguém consegue esperar o pão esfriar."
+  },
+  {
+   "id": "le08",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Na vila dos pescadores, os barcos saíam antes do amanhecer. As mulheres preparavam o café e as redes eram conferidas uma por uma. Quando o mar estava bom, a pesca voltava cheia e a praia virava festa. Quando o mar estava bravo, todos esperavam juntos, olhando o horizonte. Ali, cada dia dependia do vento, da maré e da sorte."
+  },
+  {
+   "id": "le09",
+   "size": "long",
+   "complexity": "easy",
+   "text": "O jardim da escola nasceu de uma ideia simples. Uma turma quis plantar flores num canto vazio do pátio. Os alunos trouxeram mudas de casa, pediram terra ao jardineiro e fizeram uma escala para regar. Em poucos meses, o canto vazio virou o lugar mais bonito da escola. Hoje, as abelhas visitam as flores e os alunos usam o jardim nas aulas de ciências."
+  },
+  {
+   "id": "le10",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Meu primeiro emprego foi numa livraria pequena do centro. Eu arrumava as prateleiras, atendia os clientes e embrulhava presentes. Aprendi a reconhecer quem queria conversar e quem só queria olhar os livros em paz. O dono era um senhor calmo, que sabia onde estava cada livro sem olhar no computador. Com ele, aprendi que bom atendimento é, antes de tudo, saber ouvir."
+  },
+  {
+   "id": "le11",
+   "size": "long",
+   "complexity": "easy",
+   "text": "As formigas trabalham em equipe de um jeito impressionante. Cada uma tem uma tarefa, e todas parecem saber exatamente o que fazer. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada do ninho. Quando encontram algo grande demais, várias se juntam para carregar. Observar uma fila de formigas por alguns minutos é uma aula sobre paciência e cooperação."
+  },
+  {
+   "id": "le12",
+   "size": "long",
+   "complexity": "easy",
+   "text": "A bicicleta é um jeito barato e saudável de andar pela cidade. Ela não faz barulho, não solta fumaça e cabe em qualquer canto. No começo, as subidas cansam e o trânsito assusta um pouco. Com o tempo, as pernas ficam mais fortes e a gente descobre caminhos que nunca tinha visto. E ainda sobra o prazer de sentir o vento no rosto."
+  },
+  {
+   "id": "le13",
+   "size": "long",
+   "complexity": "easy",
+   "text": "O circo chegou na cidade numa manhã de sol. A lona colorida foi montada no campo de futebol e logo virou o assunto de todos. Na primeira noite, a fila dava a volta no quarteirão. Tinha palhaço, malabarista e uma moça que andava na corda bamba sem medo. As crianças saíram de lá querendo aprender a fazer acrobacias no quintal."
+  },
+  {
+   "id": "le14",
+   "size": "long",
+   "complexity": "easy",
+   "text": "Cuidar de uma planta ensina muito. É preciso lembrar de regar, mas sem exagero, e encontrar um lugar com a luz certa. Algumas folhas amarelam, outras nascem novas e brilhantes. Quando aparece a primeira flor, a alegria é grande, como se a planta agradecesse o cuidado. Talvez por isso tanta gente goste de ter um pouco de verde em casa."
+  },
+  {
+   "id": "lm01",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Quem nunca se perdeu numa cidade desconhecida não sabe o prazer de ser encontrado por ela. Na primeira tarde em Recife, saí sem mapa e acabei numa rua estreita, cheia de casarões coloridos e cheiro de tapioca. Um senhor percebeu minha confusão, puxou conversa e me levou até a ponte mais próxima. No caminho, contou histórias do bairro, dos carnavais antigos e dos rios que cortam a cidade. Cheguei atrasado ao compromisso, mas com a sensação de que tinha ganhado o dia."
+  },
+  {
+   "id": "lm02",
+   "size": "long",
+   "complexity": "medium",
+   "text": "A Mata Atlântica já cobriu boa parte do litoral brasileiro. Hoje, restam fragmentos espalhados, alguns protegidos em parques e reservas. Mesmo assim, ela abriga uma biodiversidade impressionante: aves raras, macacos, bromélias e árvores centenárias. Projetos de reflorestamento tentam reconectar essas ilhas de floresta, criando corredores por onde os animais possam circular. É um trabalho lento, que depende de cientistas, agricultores e voluntários, mas que já mostra resultados animadores."
+  },
+  {
+   "id": "lm03",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Ninguém na família sabia exatamente de onde vinha a receita do bolo de fubá da tia Dirce. Ela dizia que tinha aprendido com a mãe, que aprendeu com a avó, e assim por diante. O curioso é que cada geração mudava um detalhe: uma colocava erva-doce, outra trocava o leite por leite de coco, outra deixava a massa descansar. Quando perguntavam qual era a versão certa, ela respondia sem hesitar: a que estiver na mesa, ainda quente."
+  },
+  {
+   "id": "lm04",
+   "size": "long",
+   "complexity": "medium",
+   "text": "O silêncio da biblioteca era quebrado apenas pelo virar das páginas e pelo ruído distante do ar-condicionado. Mariana estudava para o vestibular havia meses e já conhecia cada canto daquele salão. Sabia qual mesa recebia mais luz pela manhã, qual cadeira rangia e em que prateleira ficavam os livros de química. Naquela tarde, porém, algo mudou: pela primeira vez, as fórmulas fizeram sentido sem esforço. Ela fechou o caderno, sorriu e decidiu que merecia um café."
+  },
+  {
+   "id": "lm05",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Você já reparou como o cheiro desperta lembranças? Basta um aroma de bolo assando para voltarmos à cozinha da infância. O perfume de chuva na terra lembra férias no interior; o de protetor solar, dias de praia. Os cientistas explicam que o olfato tem uma ligação direta com as áreas do cérebro ligadas à memória e às emoções. Por isso, um simples cheiro pode ser mais poderoso que uma fotografia."
+  },
+  {
+   "id": "lm06",
+   "size": "long",
+   "complexity": "medium",
+   "text": "A maratona começou às seis da manhã, com o céu ainda escuro. Milhares de corredores ocupavam a avenida, cada um com sua história e seu objetivo. Uns queriam bater o próprio recorde; outros, apenas terminar. No quilômetro trinta, quando as pernas pesavam e a vontade de desistir aparecia, o público fazia a diferença: aplausos, cartazes e gritos de incentivo empurravam todo mundo para a frente. Na chegada, as medalhas brilhavam, mas os abraços brilhavam mais."
+  },
+  {
+   "id": "lm07",
+   "size": "long",
+   "complexity": "medium",
+   "text": "O sertão nordestino surpreende quem chega com ideias prontas. Na época da seca, a paisagem parece cinzenta e sem vida, com galhos retorcidos e chão rachado. Basta, porém, uma boa chuva para tudo mudar: em poucos dias, a caatinga se cobre de verde, as flores aparecem e os animais voltam a circular. Os moradores conhecem esse ciclo como ninguém e aprenderam a guardar água, sementes e esperança para os tempos difíceis."
+  },
+  {
+   "id": "lm08",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Programar é, em grande parte, aprender a lidar com erros. O código raramente funciona de primeira, e cada mensagem vermelha na tela é uma pista. Com o tempo, o programador desenvolve paciência e método: lê o erro com calma, testa uma hipótese, observa o resultado. Às vezes, o problema está numa vírgula esquecida; outras vezes, numa ideia mal planejada. Em todos os casos, a satisfação de ver tudo funcionar compensa as horas de investigação."
+  },
+  {
+   "id": "lm09",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Dona Lurdes costurava para o bairro inteiro havia mais de trinta anos. Sua pequena oficina, nos fundos da casa, vivia cheia de tecidos, linhas e conversas. Ela fazia ajustes, consertava zíperes e criava vestidos de festa a partir de simples desenhos em guardanapos. Quando alguém agradecia, ela dizia que o segredo não estava na máquina, e sim no tempo dedicado a cada peça. Os clientes saíam com roupas novas e, quase sempre, com um conselho de presente."
+  },
+  {
+   "id": "lm10",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Observar o céu numa noite sem lua, longe das luzes da cidade, é uma experiência que muda a forma como vemos o mundo. As estrelas aparecem aos milhares, e a Via Láctea se estende como uma faixa de poeira luminosa. Com um pouco de paciência, é possível ver satélites cruzando o céu e, com sorte, uma estrela cadente. Diante de tanta imensidão, nossos problemas parecem menores, e a curiosidade cresce."
+  },
+  {
+   "id": "lm11",
+   "size": "long",
+   "complexity": "medium",
+   "text": "A cozinha mineira é famosa pela fartura e pelo sabor caseiro. Pão de queijo, feijão tropeiro, frango com quiabo e doce de leite são apenas o começo. Muitas receitas nasceram nas fazendas, onde era preciso aproveitar tudo o que a terra oferecia. O fogão a lenha, ainda presente em várias casas, dá um gosto especial à comida. Para os mineiros, receber bem é questão de honra: ninguém sai da mesa com fome."
+  },
+  {
+   "id": "lm12",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Mudar de cidade é como começar um livro novo sem saber o gênero. Nos primeiros dias, tudo parece estranho: os nomes das ruas, o sotaque, o horário dos ônibus. Aos poucos, porém, surgem os pontos de referência: a padaria preferida, o banco da praça, o vizinho que sempre acena. Um dia, sem perceber, já explicamos o caminho para alguém recém-chegado. É nesse momento que a cidade estranha se transforma em casa."
+  },
+  {
+   "id": "lm13",
+   "size": "long",
+   "complexity": "medium",
+   "text": "As abelhas são fundamentais para a produção de alimentos. Ao visitar as flores em busca de néctar, elas transportam pólen de uma planta para outra, permitindo que frutos e sementes se formem. Sem esse trabalho, muitas frutas e hortaliças ficariam mais raras e caras. Infelizmente, o uso excessivo de agrotóxicos e a perda de habitat ameaçam várias espécies. Plantar flores nativas e apoiar a apicultura responsável são formas simples de ajudar."
+  },
+  {
+   "id": "lm14",
+   "size": "long",
+   "complexity": "medium",
+   "text": "Na véspera da viagem, a mala parecia pequena demais para tantos planos. Camila tirava e colocava roupas, trocava sapatos, discutia consigo mesma. Precisava mesmo de três casacos? E daquele livro enorme, que nunca terminava? No fim, decidiu levar apenas o essencial e deixar espaço para o inesperado. Foi a melhor decisão: voltou com a mala cheia de lembranças, presentes e histórias que nenhuma lista poderia prever."
+  },
+  {
+   "id": "lh01",
+   "size": "long",
+   "complexity": "hard",
+   "text": "O relatório trimestral apontou números contraditórios: a receita bruta cresceu 12,4% (de R$ 8,1 milhões para R$ 9,1 milhões), mas o lucro líquido recuou 3,7%. Segundo a diretoria financeira, a queda decorre de \"investimentos extraordinários em infraestrutura e capacitação\", que deverão gerar retorno a partir do segundo semestre. Analistas independentes, entretanto, recomendam cautela: o endividamento de curto prazo saltou para 41% do patrimônio, patamar considerado elevado para o setor."
+  },
+  {
+   "id": "lh02",
+   "size": "long",
+   "complexity": "hard",
+   "text": "\"Não confunda pressa com velocidade\", escreveu o mestre de obras no quadro da cantina. Abaixo, alguém acrescentou, com letra miúda: \"nem esforço com resultado\". Durante semanas, a frase gerou debates acalorados entre pedreiros, eletricistas e engenheiros; uns a consideravam óbvia, outros, provocadora. No fim da obra (concluída 17 dias antes do prazo, diga-se de passagem), o quadro foi desmontado com cuidado e pendurado na sede da construtora."
+  },
+  {
+   "id": "lh03",
+   "size": "long",
+   "complexity": "hard",
+   "text": "A fotossíntese pode ser resumida pela equação 6CO2 + 6H2O + luz -> C6H12O6 + 6O2: dióxido de carbono e água, na presença de luz, produzem glicose e oxigênio. O processo ocorre principalmente nos cloroplastos, organelas que contêm clorofila, o pigmento responsável pela cor verde das folhas. Estima-se que as algas e o fitoplâncton marinho respondam por cerca de metade do oxigênio produzido no planeta - um dado que costuma surpreender estudantes."
+  },
+  {
+   "id": "lh04",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Prezados participantes: o check-in do congresso será feito das 7h30 às 9h no saguão principal (Bloco A, térreo). Apresentem documento com foto e o código de inscrição enviado por e-mail (formato XX-0000-AAAA). Os crachás são pessoais e intransferíveis; em caso de perda, a segunda via custa R$ 25,00. O almoço está incluído nos dias 14 e 15, mas não no dia 16. Dúvidas? Escrevam para suporte@exemplo.com.br."
+  },
+  {
+   "id": "lh05",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Em 1969, a missão Apollo 11 levou Neil Armstrong e Buzz Aldrin à superfície lunar, enquanto Michael Collins permanecia em órbita. O módulo Eagle pousou no Mar da Tranquilidade com pouquíssimo combustível de reserva - menos de um minuto, segundo os relatos da época. Estima-se que mais de 600 milhões de pessoas tenham acompanhado a transmissão ao vivo, um recorde para a televisão naquele tempo."
+  },
+  {
+   "id": "lh06",
+   "size": "long",
+   "complexity": "hard",
+   "text": "A Lei Geral de Proteção de Dados (LGPD), sancionada em 2018, estabelece regras para a coleta, o armazenamento e o compartilhamento de dados pessoais no Brasil. Entre os princípios previstos estão a finalidade, a necessidade, a transparência e a segurança. Empresas que descumprirem a norma podem receber advertências e multas de até 2% do faturamento, limitadas a R$ 50 milhões por infração. A fiscalização cabe à Autoridade Nacional de Proteção de Dados (ANPD)."
+  },
+  {
+   "id": "lh07",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Hiperparâmetros mal ajustados podem arruinar um modelo de aprendizado de máquina. Uma taxa de aprendizado alta demais (por exemplo, 0,5) faz o algoritmo \"saltar\" sobre o mínimo da função de custo; baixa demais (0,00001), torna o treinamento interminável. Técnicas como validação cruzada, busca em grade e otimização bayesiana ajudam a encontrar valores adequados, mas exigem tempo de processamento e, sobretudo, critério de quem as aplica."
+  },
+  {
+   "id": "lh08",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Pernambuco e Paraíba disputam, há décadas, o título de \"maior São João do mundo\". Caruaru e Campina Grande reúnem, juntas, milhões de visitantes ao longo de junho; as quadrilhas juninas ensaiam meses a fio, com coreografias, figurinos e trilhas próprias. Entre fogueiras, forró pé de serra, canjica, pamonha e milho assado, a festa movimenta a economia regional e reafirma tradições centenárias."
+  },
+  {
+   "id": "lh09",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Para calcular o índice de massa corporal (IMC), divide-se o peso (em kg) pelo quadrado da altura (em metros): uma pessoa com 70 kg e 1,75 m tem IMC de aproximadamente 22,9. Apesar de prático, o índice tem limitações conhecidas: não distingue massa muscular de gordura, ignora a distribuição corporal e pode classificar atletas como \"acima do peso\". Por isso, deve ser usado junto com outras avaliações."
+  },
+  {
+   "id": "lh10",
+   "size": "long",
+   "complexity": "hard",
+   "text": "O algoritmo de Dijkstra, publicado em 1959, encontra o caminho mais curto entre um vértice de origem e todos os demais num grafo com pesos não negativos. Sua complexidade depende da estrutura de dados: com uma fila de prioridade baseada em heap binário, fica em O((V + E) log V). Aplicações vão de sistemas de navegação (GPS) a protocolos de roteamento em redes, como o OSPF."
+  },
+  {
+   "id": "lh11",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Atenção, candidatos! A prova objetiva terá 60 questões (peso 1) e a discursiva, 2 questões (peso 5). O tempo total é de 4h30, incluído o preenchimento do cartão-resposta. É proibido portar relógios, calculadoras, fones de ouvido e quaisquer aparelhos eletrônicos; o descumprimento implicará eliminação imediata. Os portões fecham às 12h50 (horário de Brasília), sem tolerância."
+  },
+  {
+   "id": "lh12",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Ao contrário do que se repete por aí, a Muralha da China não é visível a olho nu da Lua; mesmo da órbita baixa, a cerca de 400 km de altitude, enxergá-la é dificílimo, pois sua largura raramente passa de 9 metros e sua cor se confunde com o terreno. Astronautas relatam ver com mais facilidade cidades iluminadas, grandes represas e aeroportos."
+  },
+  {
+   "id": "lh13",
+   "size": "long",
+   "complexity": "hard",
+   "text": "Receita de pão de fermentação natural (rende 1 filão): 500 g de farinha de trigo, 350 ml de água, 100 g de levain ativo e 10 g de sal. Misture a farinha e a água; descanse por 40 min (autólise). Acrescente o levain e o sal, faça 4 séries de dobras a cada 30 min e deixe fermentar por 4 a 6 horas. Modele, leve à geladeira por 12 h e asse a 250 graus, em panela tampada, por 20 min; destampe e asse por mais 25 min."
+  },
+  {
+   "id": "lh14",
+   "size": "long",
+   "complexity": "hard",
+   "text": "O verbo \"haver\", no sentido de existir, é impessoal: diz-se \"houve problemas\", e não \"houveram problemas\". Já \"fazer\", indicando tempo decorrido, também não vai para o plural: \"faz dez anos\", e não \"fazem dez anos\". Esses deslizes são comuns até em textos profissionais - revisores, aliás, costumam brincar que existem poucos erros mais \"democráticos\" do que esses dois."
+  }
+ ]
+}
