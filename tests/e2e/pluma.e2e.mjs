@@ -1,4 +1,4 @@
-import { test, before, after } from 'node:test';
+import { test as nodeTest, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -9,6 +9,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const PAGE = pathToFileURL(path.join(root, 'Pluma.html')).href;
 
 let browser;
+
+const test = (name, options, fn) => (fn ? nodeTest(name, { timeout: 90000, ...options }, fn) : nodeTest(name, { timeout: 90000 }, options));
 
 before(async () => {
   browser = await chromium.launch();
@@ -50,12 +52,16 @@ async function typeAll(page, text, delay = 0) {
   }
 }
 
-const cardValue = (page, label) =>
-  page.evaluate(async (l) => {
-    await new Promise((r) => setTimeout(r, 1100));
+const fakeClock = new WeakSet();
+
+const cardValue = async (page, label) => {
+  if (fakeClock.has(page)) await page.clock.runFor(1100);
+  else await page.waitForTimeout(1100);
+  return page.evaluate((l) => {
     const card = [...document.querySelectorAll('.sheet .card')].find((c) => c.querySelector('.lbl')?.textContent === l);
     return card?.querySelector('.val')?.textContent ?? null;
   }, label);
+};
 
 test('abre direto do disco, com CSP e sem erros, e o tutorial aparece só na primeira vez', async () => {
   const { page, context, errors } = await open(null);
@@ -334,6 +340,7 @@ async function openRhythm(prefs = {}, options = {}) {
     if (m.type() === 'error') errors.push(m.text());
   });
   await page.clock.install();
+  fakeClock.add(page);
   await page.goto(PAGE);
   await page.evaluate((p) => {
     localStorage.clear();
