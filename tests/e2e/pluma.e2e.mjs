@@ -325,6 +325,196 @@ test('sem efeitos, as animações ficam desligadas', async () => {
   await context.close();
 });
 
+async function openRhythm(prefs = {}, options = {}) {
+  const context = await browser.newContext({ viewport: { width: 1366, height: 900 }, ...options });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => {
+    if (m.type() === 'error') errors.push(m.text());
+  });
+  await page.clock.install();
+  await page.goto(PAGE);
+  await page.evaluate((p) => {
+    localStorage.clear();
+    localStorage.setItem('pluma:prefs', JSON.stringify(p));
+  }, { tutorialDone: true, mode: 'rhythm', kind: 'words', size: 'short', complexity: 'easy', musicVolume: 0, ...prefs });
+  await page.reload();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 300));
+  await page.clock.runFor(200);
+  await page.waitForSelector('#rhWords .cur span');
+  return { page, context, errors };
+}
+
+const rhythmState = (page) =>
+  page.evaluate(() => ({
+    bpm: Number(document.getElementById('rhInfo').textContent.match(/(\d+) BPM/)[1]),
+    notes: Number(document.getElementById('rhInfo').textContent.match(/(\d+) notas/)[1]),
+    word: [...document.querySelectorAll('#rhWords .cur span')].map((s) => s.textContent).join(''),
+    next: document.querySelector('#rhWords .cur span.n')?.textContent ?? null,
+    score: document.getElementById('rhScore').textContent,
+    phase: document.getElementById('rhythm').dataset.phase,
+  }));
+
+test('modo ritmo: a letra no tempo vale PERFEITO, a pausa congela e o resultado vai para o histórico', async () => {
+  const { page, context, errors } = await openRhythm();
+  assert.equal(await page.isVisible('#rhythm'), true);
+  assert.equal(await page.isVisible('#typing'), false);
+  assert.equal(await page.isVisible('#hud'), false);
+  assert.match(await page.textContent('#rhVeil'), /Começar/);
+  assert.match(await page.textContent('#statusLeft'), /Modo Ritmo/);
+  const before = await rhythmState(page);
+  assert.equal(before.phase, 'ready');
+  assert.match(before.word, /^[a-z0-9ç]+$/);
+  assert.equal(before.next, before.word[0]);
+  assert.equal(await page.locator('#kb .key.next').count() > 0, true);
+
+  await page.keyboard.press('Space');
+  const step = 60000 / before.bpm / 4;
+  await page.clock.runFor(Math.round(120 + 32 * step));
+  await page.keyboard.press(before.word[0]);
+  await page.clock.runFor(30);
+  const hit = await rhythmState(page);
+  assert.equal(hit.score, '300');
+  assert.equal(hit.next, before.word[1] ?? hit.next);
+  assert.equal(await page.locator('#rhWords .cur span.d').count(), 1);
+
+  await page.keyboard.press('Space');
+  await page.clock.runFor(50);
+  assert.equal((await rhythmState(page)).phase, 'paused');
+  assert.match(await page.textContent('#rhVeil'), /Pausado/);
+  await page.clock.runFor(5000);
+  assert.equal((await rhythmState(page)).phase, 'paused');
+  await page.keyboard.press('Space');
+  await page.clock.runFor(200);
+  assert.equal((await rhythmState(page)).phase, 'count');
+  await page.clock.runFor(2500);
+  assert.equal((await rhythmState(page)).phase, 'playing');
+
+  for (let i = 0; i < 120 && !(await page.locator('.sheet').count()); i++) await page.clock.runFor(1000);
+  await page.clock.runFor(1500);
+  await page.waitForSelector('.sheet h2:text("Resultado")');
+  assert.equal(await cardValue(page, 'Perfeitos'), '1');
+  assert.equal(await cardValue(page, 'Perdidas'), String(before.notes - 1));
+  assert.equal(await cardValue(page, 'Nota'), 'D');
+  const history = await page.evaluate(() => JSON.parse(localStorage.getItem('pluma:historico')));
+  assert.equal(history.length, 1);
+  assert.equal(history[0].mode, 'rhythm');
+  assert.equal(history[0].score, 300);
+  assert.equal(history[0].perfect, 1);
+  assert.equal(history[0].grade, 'D');
+  await page.keyboard.press('Enter');
+  await page.clock.runFor(600);
+  assert.equal(await page.locator('.sheet').count(), 0);
+  assert.equal((await rhythmState(page)).phase, 'ready');
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test('modo ritmo: tecla errada quebra o combo, Esc recomeça e Tab troca a música', async () => {
+  const { page, context, errors } = await openRhythm({ complexity: 'medium' });
+  const s = await rhythmState(page);
+  const wrong = 'qwertyuiop'.split('').find((c) => c !== s.word[0]);
+  await page.keyboard.press('Space');
+  const step = 60000 / s.bpm / 4;
+  await page.clock.runFor(Math.round(120 + 32 * step - 60));
+  await page.keyboard.press(wrong);
+  await page.clock.runFor(60);
+  await page.keyboard.press(s.word[0]);
+  await page.clock.runFor(30);
+  assert.equal((await rhythmState(page)).score, '300');
+  await page.keyboard.press('Escape');
+  await page.clock.runFor(100);
+  const again = await rhythmState(page);
+  assert.equal(again.score, '0');
+  assert.equal(again.word, s.word);
+  assert.equal(again.phase, 'playing');
+  const title = await page.textContent('#rhTitle');
+  await page.keyboard.press('Tab');
+  await page.clock.runFor(100);
+  assert.equal((await rhythmState(page)).phase, 'ready');
+  assert.notEqual(await page.textContent('#rhTitle'), title);
+  await page.click('#modeSeg button:has-text("Teste")');
+  await page.clock.runFor(400);
+  assert.equal(await page.isVisible('#typing'), true);
+  assert.equal(await page.isVisible('#rhythm'), false);
+  assert.equal(await page.locator('#text .c').count() > 10, true);
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test('modo ritmo: abrir o histórico pausa a música, e as preferências guardam volume e sincronia', async () => {
+  const { page, context, errors } = await openRhythm();
+  await page.keyboard.press('Space');
+  await page.clock.runFor(1000);
+  assert.equal((await rhythmState(page)).phase, 'playing');
+  await page.keyboard.press('Alt+H');
+  await page.clock.runFor(300);
+  assert.equal((await rhythmState(page)).phase, 'paused');
+  assert.match(await page.textContent('.drawer'), /Recordes do Ritmo/);
+  await page.keyboard.press('Escape');
+  await page.clock.runFor(300);
+  await page.keyboard.press('Alt+P');
+  await page.clock.runFor(300);
+  const ranges = page.locator('.sheet input[type=range]');
+  assert.equal(await ranges.count(), 2);
+  await ranges.nth(0).fill('35');
+  await ranges.nth(1).fill('-40');
+  assert.match(await page.textContent('.sheet'), /-40 ms/);
+  const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem('pluma:prefs')));
+  assert.equal(prefs.musicVolume, 35);
+  assert.equal(prefs.rhythmOffset, -40);
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test('modo ritmo: catálogo com mais de 50 músicas, busca, setas e recorde por música', async () => {
+  const { page, context, errors } = await openRhythm();
+  assert.match(await page.textContent('#rhVeil'), /Faixa 1 de (\d+)/);
+  const total = Number((await page.textContent('#rhVeil')).match(/Faixa 1 de (\d+)/)[1]);
+  assert.ok(total >= 50, `${total} músicas`);
+  const first = await page.textContent('#rhTitle');
+  await page.keyboard.press('ArrowRight');
+  await page.clock.runFor(100);
+  assert.match(await page.textContent('#rhVeil'), /Faixa 2 de/);
+  assert.notEqual(await page.textContent('#rhTitle'), first);
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowLeft');
+  await page.clock.runFor(100);
+  assert.match(await page.textContent('#rhVeil'), new RegExp(`Faixa ${total} de ${total}`));
+
+  await page.click('.actions button:has-text("Músicas")');
+  await page.clock.runFor(300);
+  assert.equal(await page.locator('.songs .song').count(), total);
+  await page.fill('.song-search', 'bossa');
+  assert.equal(await page.locator('.songs .song').count(), 3);
+  await page.fill('.song-search', 'cafe com');
+  assert.equal(await page.locator('.songs .song').count(), 1);
+  await page.keyboard.press('Enter');
+  await page.clock.runFor(400);
+  assert.equal(await page.locator('.sheet').count(), 0);
+  assert.equal(await page.textContent('#rhTitle'), 'Café com Brisa');
+  assert.match(await page.textContent('#rhInfo'), /Bossa nova · 132 BPM/);
+  const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem('pluma:prefs')));
+  assert.equal(prefs.rhythmTrack, 'cafe-com-brisa');
+  await page.reload();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 300));
+  await page.waitForSelector('#rhWords .cur span');
+  assert.equal(await page.textContent('#rhTitle'), 'Café com Brisa');
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test('modo ritmo no celular cabe na largura', async () => {
+  const { page, context, errors } = await openRhythm({}, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  assert.ok(overflow <= 0, `rolagem horizontal de ${overflow}px`);
+  const box = await page.locator('#rhScreen').boundingBox();
+  assert.ok(box && box.width > 300 && box.height >= 320, JSON.stringify(box));
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
 const java = spawnSync('java', ['-version'], { stdio: 'ignore' }).status === 0;
 
 test('o servidor local em Java entrega a página com cabeçalhos de segurança', { skip: !java && 'Java não encontrado' }, async () => {

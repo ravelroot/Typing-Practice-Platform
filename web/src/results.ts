@@ -227,3 +227,134 @@ export function openResults(
   setTimeout(() => nextBtn.focus({ preventScroll: true }), 50);
   return overlay;
 }
+
+export interface RhythmView {
+  title: string;
+  artist: string;
+  bpm: number;
+  score: number;
+  letter: string;
+  accuracyBp: number;
+  perfect: number;
+  great: number;
+  good: number;
+  miss: number;
+  wrong: number;
+  notes: number;
+  hits: number;
+  maxCombo: number;
+  fullCombo: boolean;
+  holdsFull: number;
+  holdsBroken: number;
+  holds: number;
+  offsetMs: number | null;
+  missed: Record<string, number>;
+  durationMs: number;
+}
+
+function rhythmVerdict(r: RhythmView): string {
+  if (!r.hits) return 'Nenhuma nota acertada. Comece no Fácil e siga a contagem.';
+  if (r.fullCombo) return 'Combo completo: nenhuma nota perdida.';
+  if (r.accuracyBp >= 9500) return 'No tempo certo quase sempre.';
+  if (r.accuracyBp >= 9000) return 'Bom ritmo. Os PERFEITOS vêm com a mão relaxada.';
+  if (r.accuracyBp >= 8000) return 'Está pegando o tempo. Ouça a bateria e antecipe a próxima letra.';
+  return 'Tente uma complexidade menor até as letras saírem sem pensar.';
+}
+
+function syncText(ms: number | null): string {
+  if (ms == null) return 'sem acertos para medir';
+  if (Math.abs(ms) <= 10) return 'no tempo';
+  return ms > 0 ? 'em média atrasado' : 'em média adiantado';
+}
+
+export function openRhythmResults(r: RhythmView, ctx: Context, record: { record: boolean; previous: Entry | null }, actions: ResultActions): Overlay {
+  const subtitle = ['Ritmo', `${r.title} (${r.artist})`, `${r.bpm} BPM`, ctx.kind === 'custom' ? KIND_LABELS.custom : `${KIND_LABELS[ctx.kind]} · ${SIZE_LABELS[ctx.size]} · ${COMPLEXITY_LABELS[ctx.complexity]}`].join(' · ');
+  const head = el(
+    'div',
+    { class: 'sheet-head' },
+    el('div', {}, el('h2', { text: 'Resultado' }), el('p', { text: `${subtitle}. ${rhythmVerdict(r)}` })),
+    record.record
+      ? el('span', { class: 'badge' }, icon('trophy', 15), record.previous ? `Novo recorde! Antes: ${int(record.previous.score ?? 0)}` : 'Primeiro recorde nesta categoria')
+      : r.fullCombo
+        ? el('span', { class: 'badge' }, icon('zap', 15), 'Combo completo')
+        : null,
+  );
+  const grade = el('span', { class: `val rh-grade g-${r.letter.toLowerCase()}`, text: r.letter });
+  const hero = el(
+    'div',
+    { class: 'hero' },
+    card('Pontos', counter(r.score, int, 120), `maior combo: ${int(r.maxCombo)}`, 0, 'main'),
+    card('Nota', grade, `${int(r.hits)} de ${int(r.notes)} notas`, 1),
+    card('Precisão', counter(r.accuracyBp, (v) => formatBp(Math.round(v)), 200), 'PERFEITO 100%, ÓTIMO 70%, BOM 40%', 2, r.accuracyBp >= 9500 ? 'good' : r.accuracyBp < 9000 ? 'bad' : ''),
+  );
+  const perMin = r.durationMs ? (r.hits * 60000) / r.durationMs : 0;
+  const cards = el(
+    'div',
+    { class: 'cards' },
+    card('Perfeitos', counter(r.perfect, int, 260), 'até 45 ms do tempo', 3, 'good'),
+    card('Ótimos', counter(r.great, int, 300), 'até 90 ms', 4),
+    card('Bons', counter(r.good, int, 340), 'até 140 ms', 5),
+    card('Perdidas', counter(r.miss, int, 380), 'notas que passaram', 6, r.miss ? 'bad' : ''),
+    card('Teclas erradas', counter(r.wrong, int, 420), 'quebram o combo', 7, r.wrong ? 'bad' : ''),
+    card('Notas longas', el('span', { class: 'val', text: `${int(r.holdsFull)}/${int(r.holds)}` }), 'seguradas até o fim', 8),
+    card('Letras por minuto', counter(perMin, int, 460), `${formatDuration(r.durationMs).replace(/,\d+$/, '')} de música`, 9),
+    card('Sincronia', el('span', { class: 'val', text: r.offsetMs == null ? '—' : `${r.offsetMs > 0 ? '+' : ''}${int(r.offsetMs)}`, title: 'Média da diferença entre o toque e a nota' }, r.offsetMs == null ? '' : el('small', { text: 'ms' })), syncText(r.offsetMs), 10),
+  );
+  const formula = el(
+    'p',
+    { class: 'formula' },
+    el('b', { text: 'Como pontuamos: ' }),
+    'PERFEITO vale 300, ÓTIMO 200 e BOM 100, vezes o multiplicador (×1 a ×4, sobe a cada 10 acertos seguidos). Segurar uma nota longa rende pontos extras. Se a sincronia ficar acima de 20 ms, ajuste em Preferências.',
+  );
+  const body = el('div', {}, head, hero, cards, formula);
+  const missed = Object.entries(r.missed)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
+  const train = el('div', { class: 'chart-box' }, el('h3', { text: 'Letras para treinar' }));
+  if (missed.length) {
+    const list = el('div', { class: 'keys-to-train' });
+    missed.forEach(([c, n], i) => {
+      const d = describe(c, 'main');
+      list.append(el('span', { class: 'keycap', style: { '--i': String(i) }, title: d.text }, el('b', { text: c }), `${n} ${n === 1 ? 'perdida' : 'perdidas'}`));
+    });
+    train.append(list);
+  } else {
+    train.append(el('p', { class: 'formula', text: 'Nenhuma nota perdida. Impecável!' }));
+  }
+  body.append(train);
+
+  const nextBtn = el('button', { class: 'btn primary', type: 'button' }, icon('next', 16), 'Outra música', el('kbd', { text: 'Enter' }));
+  const repeatBtn = el('button', { class: 'btn', type: 'button' }, icon('restart', 16), 'Tocar de novo', el('kbd', { text: 'R' }));
+  const histBtn = el('button', { class: 'btn ghost', type: 'button' }, icon('history', 16), 'Histórico e recordes');
+  body.append(el('div', { class: 'sheet-foot' }, el('div', { class: 'grp' }, histBtn), el('div', { class: 'grp' }, repeatBtn, nextBtn)));
+
+  let chosen: (() => void) | null = null;
+  const overlay = openSheet(body, {
+    label: 'Resultado do Ritmo',
+    onClose: () => {
+      body.removeEventListener('keydown', keys);
+      if (chosen) chosen();
+      else actions.closed();
+    },
+  });
+  const pick = (fn: () => void) => {
+    chosen = fn;
+    overlay.close();
+  };
+  nextBtn.addEventListener('click', () => pick(actions.next));
+  repeatBtn.addEventListener('click', () => pick(actions.repeat ?? actions.next));
+  histBtn.addEventListener('click', () => pick(actions.history));
+  const keys = (e: KeyboardEvent) => {
+    if (e.target instanceof HTMLButtonElement && e.key === 'Enter') return;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      pick(actions.next);
+    } else if ((e.key === 'r' || e.key === 'R') && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      pick(actions.repeat ?? actions.next);
+    }
+  };
+  body.addEventListener('keydown', keys);
+  setTimeout(() => nextBtn.focus({ preventScroll: true }), 50);
+  return overlay;
+}

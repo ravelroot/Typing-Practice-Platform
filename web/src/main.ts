@@ -1,5 +1,7 @@
 import textos from '../data/textos.json' with { type: 'json' };
 import palavras from '../data/palavras.json' with { type: 'json' };
+import musicas from '../data/musicas.json' with { type: 'json' };
+import { compose, parseTracks, rhythmWords, type Track } from './chart.ts';
 import {
   COMPLEXITIES,
   COMPLEXITY_LABELS,
@@ -8,6 +10,7 @@ import {
   KIND_LABELS,
   MAX_CUSTOM_CHARS,
   PART_TARGET as PART_SIZE,
+  Rng,
   SIZES,
   SIZE_LABELS,
   adaptForTyping,
@@ -22,11 +25,13 @@ import {
 } from './content.ts';
 import { ACCEPTED, DocumentError, extract } from './documents.ts';
 import { Effects } from './effects.ts';
-import { History, categoryLabel, type Context } from './history.ts';
+import { GROOVES } from './grooves.ts';
+import { History, MODE_LABELS, categoryKey, categoryLabel, type Context, type Entry } from './history.ts';
 import { Keyboard } from './keyboard.ts';
 import { combine, formatBp, formatDuration, formatX100, summarize, timeline, type Summary } from './metrics.ts';
-import { PALETTES, applyLook, loadPrefs, savePrefs, systemTheme, type Caret, type FontSize, type Mode, type Prefs } from './prefs.ts';
-import { openResults } from './results.ts';
+import { OFFSET_LIMIT, PALETTES, applyLook, loadPrefs, savePrefs, systemTheme, type Caret, type FontSize, type Mode, type Prefs } from './prefs.ts';
+import { openResults, openRhythmResults } from './results.ts';
+import { RhythmGame, type Phase, type RhythmResult, type TrackMeta } from './rhythm.ts';
 import { Session, diffInput, type Step } from './session.ts';
 import { Sound } from './sound.ts';
 import { startTour } from './tutorial.ts';
@@ -55,6 +60,9 @@ const DATA: ContentData = {
   phrases: textos.phrases as ContentData['phrases'],
   words: palavras as ContentData['words'],
 };
+
+const TRACKS: Track[] = parseTracks(musicas);
+const FALLBACK_TRACK: Track = { id: 'pluma', title: 'Pluma', artist: 'Pluma Sound', groove: 'chip', bpm: 120, key: 'C', scale: 'major', verse: [0, 4, 5, 3], chorus: [3, 4, 0, 5], lead: 'pulse25', arp: 'up', swing: 0 };
 
 const KIND_ICONS: Record<Kind, string> = {
   text: 'text',
@@ -110,6 +118,9 @@ class App {
   complexitySeg: Segmented<Complexity>;
   kindDrop: Dropdown<Kind>;
   busy = false;
+  rhythm: RhythmGame;
+  songSeed: number | null = null;
+  pauseBtn: HTMLButtonElement | null = null;
 
   constructor() {
     applyLook(this.prefs);
@@ -119,12 +130,24 @@ class App {
     this.fx = new Effects($<HTMLCanvasElement>('fx'), this.typing);
     this.keyboard = new Keyboard($('kb'), $('fingerHint'));
     this.sound.enabled = this.prefs.sound;
+    this.rhythm = new RhythmGame({
+      browse: (delta) => this.browse(delta),
+      list: () => this.songsDialog(),
+      next: (ch) => this.keyboard.showNext(ch),
+      key: (code, ok) => this.keyboard.flash(code, ok),
+      wrong: () => this.sound.error(),
+      finished: (r) => this.finishRhythm(r),
+      phase: (p) => this.syncPause(p),
+    });
+    this.rhythm.setVolume(this.prefs.musicVolume / 100);
+    this.rhythm.latencyMs = this.prefs.rhythmOffset;
 
     this.modeSeg = new Segmented<Mode>(
       $('modeSeg'),
       [
         { id: 'free', label: 'Livre', title: 'Sem cronômetro: treine no seu ritmo' },
         { id: 'test', label: 'Teste', title: 'Mede o tempo final e mostra o diagnóstico' },
+        { id: 'rhythm', label: 'Ritmo', title: 'Jogo musical: digite cada letra no tempo da música' },
       ],
       this.prefs.mode,
       (v) => this.change({ mode: v }),
@@ -147,6 +170,7 @@ class App {
     this.topButtons();
     this.bindInput();
     this.bindGlobal();
+    this.applyMode();
     this.buildHud();
     this.buildActions();
     this.syncControls();
@@ -205,7 +229,7 @@ class App {
     const p = this.prefs;
     const theme = (p.theme ?? systemTheme()) === 'dark' ? 'escuro' : 'claro';
     const what = p.kind === 'custom' ? KIND_LABELS.custom : `${KIND_LABELS[p.kind]} · ${SIZE_LABELS[p.size]} · ${COMPLEXITY_LABELS[p.complexity]}`;
-    $('statusLeft').replaceChildren(el('span', { text: `Pluma ${VERSION}` }), el('span', { text: p.mode === 'test' ? 'Modo Teste' : 'Modo Livre' }), el('span', { text: what }));
+    $('statusLeft').replaceChildren(el('span', { text: `Pluma ${VERSION}` }), el('span', { text: `Modo ${MODE_LABELS[p.mode]}` }), el('span', { text: what }));
     $('statusRight').replaceChildren(el('span', { text: `Tema ${theme}` }), el('span', { text: 'Histórico salvo neste navegador' }));
   }
 
@@ -225,10 +249,23 @@ class App {
     this.renderStatus();
     if (modeChanged) {
       this.freeParts = [];
+      this.applyMode();
       this.buildHud();
     }
     this.buildActions();
     this.newText({});
+  }
+
+  applyMode() {
+    const r = this.prefs.mode === 'rhythm';
+    this.typing.hidden = r;
+    $('rhythm').hidden = !r;
+    $('hud').hidden = r;
+    if (!r) this.rhythm.unload();
+    else {
+      this.stopTimers();
+      this.session = null;
+    }
   }
 
   chooseKind(kind: Kind) {
@@ -289,9 +326,11 @@ class App {
   }
 
   mainMenu() {
+    const r = this.prefs.mode === 'rhythm';
     openMenu($('menuBtn'), [
-      { label: 'Novo texto', icon: 'next', kbd: 'Tab', run: () => this.newText({ step: 1 }) },
-      { label: 'Recomeçar este texto', icon: 'restart', kbd: 'Esc', run: () => this.newText({ repeat: true }) },
+      { label: r ? 'Outra música' : 'Novo texto', icon: 'next', kbd: 'Tab', run: () => this.newText({ step: 1 }) },
+      { label: r ? 'Recomeçar esta música' : 'Recomeçar este texto', icon: 'restart', kbd: 'Esc', run: () => this.newText({ repeat: true }) },
+      { label: 'Escolher música…', icon: 'music', run: () => this.songsDialog() },
       { label: 'Texto customizado…', icon: 'edit', run: () => this.customDialog() },
       { sep: true },
       { label: 'Histórico e recordes', icon: 'history', kbd: 'Alt+H', run: () => this.openHistory() },
@@ -331,6 +370,30 @@ class App {
     bar.replaceChildren();
     const btn = (label: string, ic: string, kbd: string | null, run: () => void, cls = 'btn') =>
       el('button', { class: cls, type: 'button', onclick: () => run() }, icon(ic, 15), label, kbd ? el('kbd', { text: kbd }) : null);
+    this.pauseBtn = null;
+    if (this.prefs.mode === 'rhythm') {
+      const keep = (b: HTMLButtonElement) => {
+        b.addEventListener('pointerdown', (e) => e.preventDefault());
+        return b;
+      };
+      this.pauseBtn = keep(btn('Começar', 'play', 'Espaço', () => {
+        this.rhythm.toggle();
+        this.focus();
+      }, 'btn primary'));
+      bar.append(
+        keep(btn('Recomeçar', 'restart', 'Esc', () => {
+          this.rhythmRestart();
+          this.focus();
+        })),
+        keep(btn('Outra música', 'next', 'Tab', () => this.newText({ step: 1 }))),
+        this.pauseBtn,
+        btn('Músicas', 'music', null, () => this.songsDialog()),
+      );
+      if (this.prefs.kind === 'custom') bar.append(btn('Trocar texto ou arquivo', 'upload', null, () => this.customDialog()));
+      bar.append(el('span', { class: 'hint' }, icon('music', 14), `${TRACKS.length} músicas · digite cada letra quando ela encostar no círculo`));
+      this.syncPause(this.rhythm.phase);
+      return;
+    }
     const doc = this.prefs.kind === 'custom' && splitParts(this.prefs.customText, this.prefs.size).length > 1;
     bar.append(btn('Recomeçar', 'restart', 'Esc', () => this.newText({ repeat: true })), btn(doc ? 'Próxima parte' : 'Novo texto', 'next', 'Tab', () => this.newText({ step: 1 })));
     if (this.prefs.kind === 'custom') {
@@ -373,9 +436,242 @@ class App {
     return { kind: g.kind, size: g.size, complexity: g.complexity, seed: g.seed, phraseId: g.phraseId, text: g.text, part: 0, parts: 1 };
   }
 
+  syncPause(phase: Phase) {
+    const b = this.pauseBtn;
+    if (!b) return;
+    const playing = phase === 'playing' || phase === 'count';
+    const label = playing ? 'Pausar' : phase === 'paused' ? 'Continuar' : 'Começar';
+    b.disabled = phase === 'done' || phase === 'empty';
+    if (b.dataset.label === label) return;
+    b.dataset.label = label;
+    b.replaceChildren(icon(playing ? 'pause' : 'play', 15), label, el('kbd', { text: 'Espaço' }));
+  }
+
+  rhythmRestart() {
+    const phase = this.rhythm.phase;
+    if (phase === 'ready' || phase === 'empty' || phase === 'done') this.newText({ repeat: true });
+    else this.rhythm.restart();
+  }
+
+  trackIndex(): number {
+    const i = TRACKS.findIndex((t) => t.id === this.prefs.rhythmTrack);
+    return i < 0 ? 0 : i;
+  }
+
+  track(): Track {
+    return TRACKS[this.trackIndex()] ?? FALLBACK_TRACK;
+  }
+
+  setTrack(index: number) {
+    if (!TRACKS.length) return;
+    const i = ((index % TRACKS.length) + TRACKS.length) % TRACKS.length;
+    this.prefs.rhythmTrack = (TRACKS[i] as Track).id;
+    this.save();
+    this.loadSong('fresh');
+  }
+
+  browse(delta: number) {
+    const phase = this.rhythm.phase;
+    if (phase === 'playing' || phase === 'count' || phase === 'paused') return;
+    this.setTrack(this.trackIndex() + delta);
+  }
+
+  bestFor(track: Track): Entry | null {
+    const p = this.prefs;
+    return this.history.best(categoryKey({ mode: 'rhythm', track: track.id, kind: p.kind, size: p.size, complexity: p.complexity }), 'rhythm');
+  }
+
+  songsDialog() {
+    closeMenu();
+    if (this.prefs.mode !== 'rhythm') this.change({ mode: 'rhythm' });
+    const nf = new Intl.NumberFormat('pt-BR');
+    const current = this.trackIndex();
+    const search = el('input', { type: 'search', class: 'song-search', placeholder: 'Buscar por nome, banda ou estilo', 'aria-label': 'Buscar música' });
+    const style = el('select', { class: 'select', 'aria-label': 'Filtrar por estilo' }, el('option', { value: '', text: 'Todos os estilos' })) as HTMLSelectElement;
+    for (const g of new Set(TRACKS.map((t) => t.groove))) style.append(el('option', { value: g, text: GROOVES[g].label }));
+    const list = el('div', { class: 'songs', role: 'list' });
+    const count = el('small', { class: 'songs-count' });
+    const fold = (v: string) => v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    let first: HTMLButtonElement | null = null;
+    const render = () => {
+      const q = fold(search.value.trim());
+      list.replaceChildren();
+      first = null;
+      let shown = 0;
+      TRACKS.forEach((t, i) => {
+        if (style.value && t.groove !== style.value) return;
+        if (q && !fold(`${t.title} ${t.artist} ${GROOVES[t.groove].label}`).includes(q)) return;
+        const best = this.bestFor(t);
+        const b = el(
+          'button',
+          { class: `song${i === current ? ' on' : ''}`, type: 'button', role: 'listitem', 'aria-current': i === current ? 'true' : null, style: { '--i': String(Math.min(shown, 14)) } },
+          el('span', { class: 'song-n', text: String(i + 1).padStart(2, '0') }),
+          el('span', { class: 'song-t' }, el('b', { text: t.title }), el('small', { text: `${t.artist} · ${GROOVES[t.groove].label} · ${t.bpm} BPM` })),
+          el('span', { class: 'song-r' }, best ? el('b', { text: best.grade ?? '—' }) : el('i', { text: 'nova' }), best ? el('small', { text: nf.format(best.score ?? 0) }) : null),
+        );
+        b.addEventListener('click', () => {
+          ov.close();
+          this.setTrack(i);
+        });
+        if (!first) first = b;
+        list.append(b);
+        shown++;
+      });
+      count.textContent = shown === TRACKS.length ? `${TRACKS.length} músicas` : `${shown} de ${TRACKS.length} músicas`;
+      if (!shown) list.append(el('p', { class: 'empty', text: 'Nenhuma música com esse nome.' }));
+    };
+    search.addEventListener('input', render);
+    style.addEventListener('change', render);
+    search.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && first) {
+        e.preventDefault();
+        first.click();
+      }
+    });
+    const body = el(
+      'div',
+      {},
+      el(
+        'div',
+        { class: 'sheet-head' },
+        el('div', {}, el('h2', { text: 'Músicas' }), el('p', { text: `Trilhas originais feitas para o Pluma, em ${new Set(TRACKS.map((t) => t.groove)).size} estilos. A nota e o recorde ao lado valem para ${categoryLabel(this.prefs)}.` })),
+      ),
+      el('div', { class: 'filter-row songs-filter' }, search, style, count),
+      list,
+      el('div', { class: 'sheet-foot' }, el('span'), el('button', { class: 'btn primary', type: 'button', onclick: () => ov.close(), text: 'Fechar' })),
+    );
+    const ov = openSheet(body, { center: true, label: 'Músicas', dialogClass: 'dialog wide', onClose: () => this.focus() });
+    render();
+    setTimeout(() => {
+      search.focus();
+      list.querySelector('.song.on')?.scrollIntoView({ block: 'center' });
+    }, 60);
+  }
+
+  rhythmSource(seed: number): string[] {
+    const p = this.prefs;
+    if (p.kind === 'custom') return rhythmWords(p.customText);
+    const rng = new Rng(seed ^ 0x5bd1e995);
+    const out: string[] = [];
+    for (let i = 0; i < 60 && out.length < 360; i++) {
+      out.push(...rhythmWords(generate(DATA, { kind: p.kind, size: 'long', complexity: p.complexity, seed: rng.next() }).text));
+    }
+    return out;
+  }
+
+  loadSong(how: 'repeat' | 'fresh' | 'other') {
+    const p = this.prefs;
+    if (p.kind === 'custom' && !p.customText) {
+      this.customDialog();
+      return;
+    }
+    if (how === 'other' && TRACKS.length > 1) {
+      const now = this.trackIndex();
+      let i = now;
+      while (i === now) i = Math.floor((randomSeed() / 4294967296) * TRACKS.length);
+      p.rhythmTrack = (TRACKS[i] as Track).id;
+      this.save();
+    }
+    const track = this.track();
+    const seed = how === 'repeat' && this.songSeed != null ? this.songSeed : randomSeed();
+    this.songSeed = seed;
+    const song = compose(this.rhythmSource(seed), { size: p.size, complexity: p.complexity, seed, track });
+    this.stopTimers();
+    this.session = null;
+    this.finished = false;
+    this.current = { kind: p.kind, size: p.size, complexity: p.complexity, seed, phraseId: null, text: song.words.join(' '), part: 0, parts: 1 };
+    this.keyboard.setLayout('main');
+    const best = this.bestFor(track);
+    const meta: TrackMeta = {
+      index: this.trackIndex(),
+      total: TRACKS.length,
+      style: GROOVES[track.groove].label,
+      best: best ? `Seu recorde aqui: ${new Intl.NumberFormat('pt-BR').format(best.score ?? 0)} pontos, nota ${best.grade ?? '—'}` : null,
+    };
+    this.rhythm.load(song, meta);
+    const tag = $('rhTag').querySelector('span');
+    if (tag) tag.textContent = ['Ritmo', p.kind === 'custom' ? [KIND_LABELS.custom, p.customName].filter(Boolean).join(' · ') : `${KIND_LABELS[p.kind]} · ${SIZE_LABELS[p.size]} · ${COMPLEXITY_LABELS[p.complexity]}`].join(' · ');
+    const nf = new Intl.NumberFormat('pt-BR');
+    $('rhInfo').textContent = `${GROOVES[track.groove].label} · ${song.bpm} BPM · ${formatDuration(song.duration * 1000).replace(/,\d+$/, '')} · ${nf.format(song.notes.length)} notas`;
+    this.focus();
+  }
+
+  finishRhythm(r: RhythmResult) {
+    const ctx = this.context();
+    const record = this.history.addRhythm(
+      {
+        score: r.score,
+        grade: r.letter,
+        perfect: r.perfect,
+        great: r.great,
+        good: r.good,
+        miss: r.miss,
+        wrong: r.wrong,
+        notes: r.notes,
+        hits: r.hits,
+        presses: r.presses,
+        maxCombo: r.maxCombo,
+        accuracyBp: r.accuracyBp,
+        durationMs: r.durationMs,
+        title: r.song.title,
+        bpm: r.song.bpm,
+        track: r.song.track.id,
+        completed: true,
+      },
+      ctx,
+    );
+    this.sound.chime(record.record);
+    if (record.record || r.fullCombo) this.fx.feathers(record.record ? 18 : 10);
+    this.announce(`Música concluída com ${new Intl.NumberFormat('pt-BR').format(r.score)} pontos, nota ${r.letter}, precisão de ${formatBp(r.accuracyBp)}.`);
+    this.results = openRhythmResults(
+      { ...r, title: r.song.title, artist: r.song.artist, bpm: r.song.bpm },
+      ctx,
+      record,
+      {
+        repeat: () => this.newText({ repeat: true }),
+        next: () => this.newText({ step: 1 }),
+        history: () => {
+          this.newText({ step: 1 });
+          this.openHistory();
+        },
+        closed: () => this.newText({ step: 1 }),
+      },
+    );
+  }
+
+  rhythmKey(e: KeyboardEvent) {
+    if (e.altKey && !e.ctrlKey) return;
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      this.newText({ step: 1 });
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      this.rhythmRestart();
+    } else if (e.key === ' ') {
+      e.preventDefault();
+      if (!e.repeat) this.rhythm.toggle();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!e.repeat && this.rhythm.phase === 'ready') this.rhythm.toggle();
+    } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      this.browse(e.key === 'ArrowLeft' ? -1 : 1);
+    } else if (e.ctrlKey || e.metaKey) {
+      if (['a', 'z', 'y', 'x', 'v'].includes(e.key.toLowerCase())) e.preventDefault();
+    } else if (this.rhythm.keydown(e)) {
+      e.preventDefault();
+    } else if (e.key.length === 1 || e.key === 'Dead' || e.key === 'Backspace' || e.key.startsWith('Arrow') || ['Home', 'End', 'PageUp', 'PageDown', 'Delete'].includes(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   async newText(options: { repeat?: boolean; enter?: boolean; step?: number }) {
     if (this.busy) return;
     closeMenu();
+    if (this.prefs.mode === 'rhythm') {
+      this.loadSong(options.repeat ? 'repeat' : options.step ? 'other' : 'fresh');
+      return;
+    }
     const next = options.repeat && this.current ? this.current : this.pick(options.step ?? 0);
     if (!next) {
       this.customDialog();
@@ -424,6 +720,12 @@ class App {
       if (t === 'insertFromPaste' || t === 'insertFromDrop' || t === 'historyUndo' || t === 'historyRedo' || t === 'insertReplacementText') e.preventDefault();
     });
     input.addEventListener('input', (e) => {
+      if (this.prefs.mode === 'rhythm') {
+        const v = input.value;
+        input.value = '';
+        if (v && !this.composing) this.rhythm.typed(v);
+        return;
+      }
       if (this.composing || (e as InputEvent).isComposing) return;
       this.consume();
     });
@@ -432,6 +734,10 @@ class App {
     input.addEventListener('keydown', (e) => {
       this.lastCode = e.code;
       if (e.code) this.keyboard.press(e.code);
+      if (this.prefs.mode === 'rhythm') {
+        this.rhythmKey(e);
+        return;
+      }
       if (e.key === 'Tab') {
         e.preventDefault();
         this.newText({ step: 1 });
@@ -451,6 +757,7 @@ class App {
     });
     input.addEventListener('keyup', (e) => {
       if (e.code) this.keyboard.release(e.code);
+      if (this.prefs.mode === 'rhythm') this.rhythm.keyup(e);
     });
     input.addEventListener('focus', () => {
       this.typing.classList.remove('blurred');
@@ -458,6 +765,7 @@ class App {
     });
     input.addEventListener('blur', () => {
       this.keyboard.releaseAll();
+      if (this.prefs.mode === 'rhythm') this.rhythm.pause();
       setTimeout(() => {
         if (document.activeElement !== input && !overlayOpen() && !document.querySelector('.tour-card')) this.typing.classList.add('blurred');
       }, 120);
@@ -465,6 +773,13 @@ class App {
     this.typing.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       this.focus();
+    });
+    $('rhythm').addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      this.focus();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) this.rhythm.pause();
     });
   }
 
@@ -496,6 +811,12 @@ class App {
       const target = e.target as HTMLElement | null;
       if (target && (target.closest('.menu, .listbox, .tour-card') || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
       if (e.key === 'Tab' && target && target.closest('.topbar, .actions')) return;
+      if (this.prefs.mode === 'rhythm' && e.key === ' ' && !(target instanceof HTMLButtonElement)) {
+        e.preventDefault();
+        this.focus();
+        this.rhythm.toggle();
+        return;
+      }
       if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) this.focus();
       else if (e.key === 'Escape' || e.key === 'Dead') this.focus();
     });
@@ -512,6 +833,10 @@ class App {
   }
 
   consume() {
+    if (this.prefs.mode === 'rhythm') {
+      this.input.value = '';
+      return;
+    }
     const s = this.session;
     if (!s || this.busy) return;
     const value = this.input.value;
@@ -843,6 +1168,16 @@ class App {
       });
       return b;
     };
+    const range = (label: string, min: number, max: number, step: number, value: number, show: (v: number) => string, fn: (v: number) => void) => {
+      const input = el('input', { type: 'range', class: 'range', min: String(min), max: String(max), step: String(step), value: String(value), 'aria-label': label });
+      const out = el('output', { class: 'range-val', text: show(value) });
+      input.addEventListener('input', () => {
+        const v = Number(input.value);
+        out.textContent = show(v);
+        fn(v);
+      });
+      return el('span', { class: 'range-row' }, input, out);
+    };
     const caretSeg = el('div', { class: 'seg', role: 'radiogroup', 'aria-label': 'Cursor' });
     const fontSeg = el('div', { class: 'seg', role: 'radiogroup', 'aria-label': 'Tamanho da letra' });
     const clear = el('button', { class: 'btn danger', type: 'button' }, icon('trash', 15), 'Apagar histórico');
@@ -878,6 +1213,16 @@ class App {
         this.save();
         this.buildActions();
       })),
+      row('Música do modo Ritmo', 'Volume da trilha; no zero, o jogo segue só pelas linhas', range('Volume da música', 0, 100, 5, this.prefs.musicVolume, (v) => `${v}%`, (v) => {
+        this.prefs.musicVolume = v;
+        this.rhythm.setVolume(v / 100);
+        this.save();
+      })),
+      row('Sincronia do modo Ritmo', 'Se a nota do resultado diz “atrasado”, aumente; se diz “adiantado”, diminua', range('Sincronia em milissegundos', -OFFSET_LIMIT, OFFSET_LIMIT, 5, this.prefs.rhythmOffset, (v) => `${v > 0 ? '+' : ''}${v} ms`, (v) => {
+        this.prefs.rhythmOffset = v;
+        this.rhythm.latencyMs = v;
+        this.save();
+      })),
       row('Cursor', 'Formato do cursor de digitação', caretSeg),
       row('Tamanho da letra', 'Tamanho do texto a digitar', fontSeg),
       row('Histórico', `${new Intl.NumberFormat('pt-BR').format(this.history.entries.length)} ${this.history.entries.length === 1 ? 'resultado salvo' : 'resultados salvos'}`, clear),
@@ -902,6 +1247,9 @@ class App {
       ['Tab', 'Novo texto'],
       ['Esc', 'Recomeçar o texto atual'],
       ['Ctrl+Enter', 'Encerrar a sessão do modo Livre'],
+      ['Espaço', 'Ritmo: começar, pausar e continuar'],
+      ['Tab / Esc', 'Ritmo: outra música / recomeçar'],
+      ['← / →', 'Ritmo: música anterior / próxima'],
       ['Backspace', 'Apagar o último caractere'],
       ['Ctrl+Backspace', 'Apagar a última palavra'],
       ['Enter / R', 'No diagnóstico: próximo texto / repetir'],
@@ -938,8 +1286,8 @@ class App {
           'div',
           {},
           el('h2', { text: `Pluma ${VERSION}`, style: { margin: '0' } }),
-          el('p', { text: 'Treino de digitação em português, com modo livre e modo teste.' }),
-          el('p', { text: `${DATA.phrases.length} textos e ${DATA.words.easy.length + DATA.words.medium.length + DATA.words.hard.length} palavras no acervo. Tudo roda neste navegador; nada é enviado para servidores.` }),
+          el('p', { text: 'Treino de digitação em português, com modo livre, modo teste e modo ritmo.' }),
+          el('p', { text: `${DATA.phrases.length} textos, ${DATA.words.easy.length + DATA.words.medium.length + DATA.words.hard.length} palavras e ${TRACKS.length} músicas originais no acervo. Tudo roda neste navegador; nada é enviado para servidores.` }),
           el('p', { text: 'Copyright (©) 2026 Erik Pimenta. Todos os direitos reservados.' }),
         ),
       ),
@@ -952,7 +1300,14 @@ class App {
     closeMenu();
     const nf = new Intl.NumberFormat('pt-BR');
     const body = el('div', { style: { display: 'contents' } });
-    const filter = el('select', { class: 'select', 'aria-label': 'Filtrar por modo' }, el('option', { value: 'all', text: 'Todos' }), el('option', { value: 'test', text: 'Testes' }), el('option', { value: 'free', text: 'Livre' })) as HTMLSelectElement;
+    const filter = el(
+      'select',
+      { class: 'select', 'aria-label': 'Filtrar por modo' },
+      el('option', { value: 'all', text: 'Todos' }),
+      el('option', { value: 'test', text: 'Testes' }),
+      el('option', { value: 'free', text: 'Livre' }),
+      el('option', { value: 'rhythm', text: 'Ritmo' }),
+    ) as HTMLSelectElement;
     const exportBtn = el('button', { class: 'btn icon ghost', type: 'button', title: 'Exportar CSV', 'aria-label': 'Exportar CSV' }, icon('download'));
     exportBtn.addEventListener('click', () => {
       if (!this.history.entries.length) return toast('O histórico ainda está vazio');
@@ -1000,24 +1355,38 @@ class App {
       }
       if (!recs.length) recList.append(el('p', { class: 'empty', text: 'Seus recordes aparecem aqui depois do primeiro teste.' }));
       recBox.append(recList);
+      const songs = this.history.records('rhythm').slice(0, 8);
+      const songBox = el('div', {}, el('h3', { class: 'section-title', text: 'Recordes do Ritmo' }));
+      const songList = el('div', { class: 'records' });
+      for (const r of songs) {
+        songList.append(el('div', { class: 'record' }, el('span', { text: `${r.title ?? 'Música'} · ${categoryLabel(r)}` }), el('b', { text: nf.format(r.score ?? 0) }), el('span', { text: `nota ${r.grade ?? '—'} · ${formatBp(r.accuracyBp)}` })));
+      }
+      if (!songs.length) songList.append(el('p', { class: 'empty', text: 'Toque uma música no modo Ritmo para ver seus recordes aqui.' }));
+      songBox.append(songList);
       const listBox = el('div', {}, el('h3', { class: 'section-title', text: 'Últimos resultados' }));
       const list = el('div', { class: 'hist-list' });
       const fmtDate = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
       const shown = this.history.entries.filter((e) => filter.value === 'all' || e.mode === filter.value).slice(0, 100);
-      shown.forEach((e, i) => {
-        list.append(
-          el(
-            'div',
-            { class: 'hist', style: { '--i': String(i) } },
-            el('span', { class: 't', text: `${e.mode === 'test' ? 'Teste' : `Livre (${e.texts} ${e.texts === 1 ? 'texto' : 'textos'})`} · ${categoryLabel(e)}` }),
-            el('span', { class: 'n' }, formatX100(e.netPerMinX100), el('small', { text: 'toques/min' })),
-            el('span', { class: 'm', text: `${fmtDate.format(new Date(e.at))} · ${formatDuration(e.durationMs)} · ${formatBp(e.accuracyBp)} · ${nf.format(e.errors)} ${e.errors === 1 ? 'erro' : 'erros'}` }),
-          ),
-        );
-      });
+      const item = (e: Entry, i: number) =>
+        e.mode === 'rhythm'
+          ? el(
+              'div',
+              { class: 'hist', style: { '--i': String(i) } },
+              el('span', { class: 't', text: `Ritmo · ${e.title ?? 'música'} · ${categoryLabel(e)}` }),
+              el('span', { class: 'n' }, nf.format(e.score ?? 0), el('small', { text: 'pontos' })),
+              el('span', { class: 'm', text: `${fmtDate.format(new Date(e.at))} · nota ${e.grade ?? '—'} · ${formatBp(e.accuracyBp)} · combo ${nf.format(e.maxStreak)}` }),
+            )
+          : el(
+              'div',
+              { class: 'hist', style: { '--i': String(i) } },
+              el('span', { class: 't', text: `${e.mode === 'test' ? 'Teste' : `Livre (${e.texts} ${e.texts === 1 ? 'texto' : 'textos'})`} · ${categoryLabel(e)}` }),
+              el('span', { class: 'n' }, formatX100(e.netPerMinX100), el('small', { text: 'toques/min' })),
+              el('span', { class: 'm', text: `${fmtDate.format(new Date(e.at))} · ${formatDuration(e.durationMs)} · ${formatBp(e.accuracyBp)} · ${nf.format(e.errors)} ${e.errors === 1 ? 'erro' : 'erros'}` }),
+            );
+      shown.forEach((e, i) => list.append(item(e, i)));
       if (!shown.length) list.append(el('p', { class: 'empty', text: 'Nada por aqui ainda. Termine um texto para começar.' }));
       listBox.append(list);
-      body.replaceChildren(mini, spark, recBox, listBox);
+      body.replaceChildren(mini, spark, recBox, songBox, listBox);
     };
     filter.addEventListener('change', render);
     render();

@@ -2,6 +2,25 @@
 
 Todas as mudanças importantes do Pluma ficam registradas aqui.
 
+## [1.1.0] - 2026-11-09
+
+### Adicionado
+
+- **Modo Ritmo**, um jogo musical de digitação: as letras descem por quatro pistas, uma para cada grupo de dedos, ligadas pela ordem da palavra, e você digita cada uma quando ela encosta no círculo, no tempo da música.
+- **56 músicas originais** compostas para o Pluma em **18 estilos** (chiptune, synthwave, rock, punk, pop, disco, house, funk, samba, bossa nova, baião, reggae, lo-fi, jazz, drum and bass, metal, frevo e blues), cada uma com andamento, tom, escala, progressão de acordes, bateria, baixo, timbre e melodia próprios, tocadas pelo sintetizador do navegador (Web Audio), sem arquivos de áudio.
+- **Escolha de música**: lista com busca por nome, banda ou estilo, filtro por estilo e a nota de cada música; **←** e **→** trocam a faixa e **Tab** sorteia outra.
+- **Julgamento por tempo**: PERFEITO (até 45 ms), ÓTIMO (até 90 ms) e BOM (até 140 ms); notas que passam viram erro e teclas erradas quebram o combo.
+- **Pontuação** com multiplicador de ×1 a ×4 (sobe a cada 10 acertos seguidos), **notas longas** para segurar a tecla, combo ao fundo do palco, painel de pontos e de música com precisão e progresso, e fila de palavras com a próxima letra sublinhada.
+- **Contagem de entrada**, **pausa** com Espaço (e sozinha ao trocar de aba ou abrir um painel) e retomada com contagem de 3 tempos.
+- **Resultado do Ritmo** com pontos, nota de S a D, precisão, perfeitos, ótimos, bons, perdidas, teclas erradas, notas longas, letras por minuto, sincronia média e as letras para treinar; **recordes por música** no histórico e no CSV.
+- Preferências de **volume da música** e **sincronia** (de −200 a +200 ms) para compensar o atraso de fones e caixas de som.
+- O conteúdo, o tamanho e a complexidade também valem no Ritmo: o conteúdo escolhe as palavras, o tamanho a duração (cerca de 45 s, 1 min 30 e 2 min 30) e a complexidade a densidade das notas.
+
+### Corrigido
+
+- O aviso de fim de teste para leitores de tela ficava visível na área de digitação; agora fica só para leitores de tela.
+- O CSV do histórico protege células que começam com `=`, `+`, `-` ou `@` contra fórmulas nas planilhas.
+
 ## [1.0.0] - 2026-11-04
 
 ### Adicionado

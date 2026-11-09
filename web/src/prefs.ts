@@ -1,7 +1,8 @@
 import { isComplexity, isKind, isSize, type Complexity, type Kind, type Size } from './content.ts';
 import { storage } from './ui.ts';
 
-export type Mode = 'free' | 'test';
+export type Mode = 'free' | 'test' | 'rhythm';
+export const MODES = ['free', 'test', 'rhythm'] as const;
 export type Theme = 'light' | 'dark';
 export type PaletteId = 'pluma' | 'bento' | 'sonda' | 'nexo';
 export type Caret = 'line' | 'block' | 'underline';
@@ -24,6 +25,9 @@ export interface Prefs {
   customName: string | null;
   customPart: number;
   tutorialDone: boolean;
+  musicVolume: number;
+  rhythmOffset: number;
+  rhythmTrack: string;
 }
 
 export const PALETTES: { id: PaletteId; label: string; origin: string; colors: string[] }[] = [
@@ -50,7 +54,15 @@ const DEFAULTS: Prefs = {
   customName: null,
   customPart: 0,
   tutorialDone: false,
+  musicVolume: 70,
+  rhythmOffset: 0,
+  rhythmTrack: '',
 };
+
+export const OFFSET_LIMIT = 200;
+
+const intIn = (v: unknown, lo: number, hi: number, fallback: number): number =>
+  typeof v === 'number' && Number.isFinite(v) ? Math.max(lo, Math.min(hi, Math.round(v))) : fallback;
 
 const oneOf = <T extends string>(v: unknown, list: readonly T[], fallback: T): T => ((list as readonly unknown[]).includes(v) ? (v as T) : fallback);
 
@@ -58,7 +70,7 @@ export function loadPrefs(): Prefs {
   const raw = storage.get<Record<string, unknown>>('prefs', {});
   const p = raw && typeof raw === 'object' ? raw : {};
   return {
-    mode: oneOf(p.mode, ['free', 'test'] as const, DEFAULTS.mode),
+    mode: oneOf(p.mode, MODES, DEFAULTS.mode),
     kind: isKind(p.kind) ? p.kind : DEFAULTS.kind,
     size: isSize(p.size) ? p.size : DEFAULTS.size,
     complexity: isComplexity(p.complexity) ? p.complexity : DEFAULTS.complexity,
@@ -74,6 +86,9 @@ export function loadPrefs(): Prefs {
     customName: typeof p.customName === 'string' ? p.customName.slice(0, 200) : null,
     customPart: typeof p.customPart === 'number' && Number.isInteger(p.customPart) && p.customPart >= 0 ? p.customPart : 0,
     tutorialDone: p.tutorialDone === true,
+    musicVolume: intIn(p.musicVolume, 0, 100, DEFAULTS.musicVolume),
+    rhythmOffset: intIn(p.rhythmOffset, -OFFSET_LIMIT, OFFSET_LIMIT, DEFAULTS.rhythmOffset),
+    rhythmTrack: typeof p.rhythmTrack === 'string' && /^[a-z0-9-]{0,60}$/.test(p.rhythmTrack) ? p.rhythmTrack : DEFAULTS.rhythmTrack,
   };
 }
 

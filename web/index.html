@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Pluma: treino de digitação em português, com modo livre e modo teste, diagnóstico de tempo, erros, acertos, precisão e toques líquidos.">
+  <meta name="description" content="Pluma: treino de digitação em português, com modo livre, modo teste e modo ritmo, diagnóstico de tempo, erros, acertos, precisão e toques líquidos.">
   <title>Pluma</title>
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <script>(function(){var d=document.documentElement,p={};try{p=JSON.parse(localStorage.getItem('pluma:prefs')||'{}')||{}}catch(e){}var t=p.theme==='dark'||p.theme==='light'?p.theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.dataset.theme=t;if(p.palette&&p.palette!=='pluma')d.dataset.palette=p.palette;if(p.fontSize&&p.fontSize!=='medium')d.dataset.font=p.fontSize;if(p.effects===false)d.dataset.motion='off';})();</script>
@@ -50,11 +50,27 @@
             </div>
           </div>
           <div class="progress" aria-hidden="true"><i id="progress"></i></div>
-          <textarea class="hidden-input" id="input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Digite o texto mostrado"></textarea>
           <canvas class="fx" id="fx" aria-hidden="true"></canvas>
           <div class="focus-veil" id="veil"><span id="veilText">Clique aqui ou aperte qualquer tecla para continuar</span></div>
           <p class="sr-only" id="liveText" aria-live="polite" hidden></p>
         </section>
+
+        <section class="rhythm" id="rhythm" aria-label="Modo Ritmo" hidden>
+          <div class="typing-head">
+            <span class="tag" id="rhTag"><i></i><span></span></span>
+            <span id="rhInfo"></span>
+          </div>
+          <div class="rh-screen" id="rhScreen">
+            <canvas class="rh-canvas" id="rhCanvas" aria-hidden="true"></canvas>
+            <div class="rh-panel rh-score" aria-hidden="true"><span class="rh-lbl">Pontos</span><b id="rhScore">0</b><span class="rh-mult" id="rhMult">×1</span></div>
+            <div class="rh-panel rh-song" aria-hidden="true"><b id="rhTitle"></b><span class="rh-artist" id="rhArtist"></span><span class="rh-lbl" id="rhLevel"></span><b class="rh-acc" id="rhAcc">100,0%</b><span class="rh-bar"><i id="rhBar"></i></span><span class="rh-lbl" id="rhPct">0%</span></div>
+            <div class="rh-words" id="rhWords" aria-hidden="true"></div>
+            <div class="rh-veil" id="rhVeil" hidden></div>
+          </div>
+          <p class="sr-only" id="rhLive" aria-live="polite"></p>
+        </section>
+
+        <textarea class="hidden-input" id="input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Digite o texto mostrado"></textarea>
 
         <div class="actions" id="actions"></div>
 

@@ -23,6 +23,7 @@ export const STEPS: Step[] = [
     items: [
       { icon: 'feather', name: 'Livre', text: 'Sem cronômetro. Os textos vão chegando e você encerra quando quiser.', target: '#modeSeg button:nth-of-type(1)' },
       { icon: 'clock', name: 'Teste', text: 'O tempo começa no primeiro toque e para no último. No fim, vem o diagnóstico.', target: '#modeSeg button:nth-of-type(2)' },
+      { icon: 'music', name: 'Ritmo', text: 'Um jogo musical: as letras descem até os círculos e você digita cada uma no tempo da música.', target: '#modeSeg button:nth-of-type(3)' },
     ],
   },
   {

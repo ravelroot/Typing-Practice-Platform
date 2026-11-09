@@ -63,6 +63,8 @@ const ICONS: Record<string, string> = {
   mix: 'M4 7h3l10 10h3M4 17h3l3-3M14 10l3-3h3M18 4l3 3-3 3M18 14l3 3-3 3',
   file: 'M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6',
   prev: 'M19 12H6M11 6l-6 6 6 6',
+  music: 'M9 18V5l11-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+  pause: 'M8 5v14M16 5v14',
 };
 
 export function icon(name: string, size = 18): SVGSVGElement {
